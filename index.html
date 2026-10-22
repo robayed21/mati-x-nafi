@@ -931,7 +931,8 @@ optBtn.addEventListener("click", function(){
   .then(function(out){
     setStep(3,4);
     return out.blob.arrayBuffer().then(function(ob){
-      var chk=parseBoxes(new Uint8Array(ob),0,ob.length);
+      var chkU8=new Uint8Array(ob);
+      var chk=parseBoxes(chkU8,0,chkU8.length);
       var okMoov=chk.filter(function(b){return b.type==="moov";})[0];
       var okMdat=chk.filter(function(b){return b.type==="mdat";})[0];
       if(!okMoov||!okMdat||okMoov.start>okMdat.start) throw new Error("Verification failed — the rebuilt file is not faststart. Your original is untouched.");
