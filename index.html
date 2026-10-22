@@ -187,6 +187,38 @@ summary::-webkit-details-marker{display:none}
 summary .plus{color:var(--cyan);font-family:"JetBrains Mono",monospace;font-size:18px;flex:none}
 details .ans{padding:0 20px 18px;color:var(--muted);font-size:15px}
 details .ans b{color:var(--ink)}
+
+/* analyzer detail + health */
+.detail-head{font-size:17px;font-weight:900;margin:28px 0 4px}
+.ic.warn{background:#2a1e07;color:var(--amber)}
+
+/* link analyzer */
+.link-row{display:flex;gap:10px;flex-wrap:wrap}
+.link-row input{flex:1;min-width:220px;background:var(--bg2);border:1px solid var(--line2);border-radius:11px;color:var(--ink);font-family:inherit;font-size:15px;padding:13px 15px}
+.link-row input:focus{outline:2px solid var(--cyan);outline-offset:1px;border-color:transparent}
+.link-result{display:none;gap:18px;margin-top:20px;align-items:flex-start}
+.link-result.on{display:flex}
+.link-result img{width:120px;aspect-ratio:9/16;object-fit:cover;border-radius:12px;border:1px solid var(--line2);background:#000;flex:none}
+@media(max-width:560px){.link-result img{width:92px}}
+.tt-title{font-weight:800;font-size:16.5px;word-break:break-word}
+.tt-author{color:var(--muted);margin-top:4px}
+.tt-author a{color:var(--cyan);font-weight:700;text-decoration:none}
+.tt-meta{color:var(--faint);font-size:12.5px;margin-top:8px}
+.note-box{margin-top:20px;border:1px solid #4d3a10;background:#171106;border-radius:12px;padding:14px 16px;color:#e8cf9a;font-size:14px}
+.note-box b{color:var(--amber)}
+
+/* best upload times */
+.sel-row{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.sel-row label{font-size:13px;color:var(--muted);font-weight:700;display:flex;flex-direction:column;gap:6px}
+.sel-row select{background:var(--bg2);border:1px solid var(--line2);color:var(--ink);border-radius:10px;padding:11px 13px;font-family:inherit;font-size:15px;font-weight:700;min-width:200px;max-width:100%}
+.times-table{width:100%;border-collapse:collapse;font-size:14.5px}
+.times-table th,.times-table td{padding:10px;border-bottom:1px solid var(--line);text-align:left}
+.times-table th{color:var(--faint);font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+.times-table td.day{font-weight:800;white-space:nowrap}
+.times-table .best{color:var(--green);font-weight:700;font-family:"JetBrains Mono",monospace;font-size:13.5px}
+.times-table .also{color:var(--muted);font-family:"JetBrains Mono",monospace;font-size:13.5px}
+.bt-tip{margin:16px 0 0;color:var(--muted);font-size:14.5px}
+.bt-tip b{color:var(--ink)}
 footer{margin-top:80px;border-top:1px solid var(--line);padding:30px 0 44px;color:var(--faint);font-size:13.5px}
 footer .wrap{display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
@@ -201,6 +233,8 @@ footer .wrap{display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between}
       <a href="#optimizer">Optimizer</a>
       <a href="#compare">Before / After</a>
       <a href="#analyzer">Analyzer</a>
+      <a href="#linkcheck">Link Check</a>
+      <a href="#times">Best Times</a>
       <a href="#pricing">Pricing</a>
       <a href="#faq">FAQ</a>
     </div>
@@ -347,8 +381,8 @@ footer .wrap{display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between}
   <section class="sec" id="analyzer">
     <div class="sec-head">
       <span class="tag">Free check</span>
-      <h2>TikTok Clip Analyzer</h2>
-      <p>Not sure if your export settings are the problem? Analyze the same file here — we score its resolution, frame rate and bitrate against what TikTok handles best.</p>
+      <h2>TikTok Analyzer</h2>
+      <p>Not sure if your export settings are the problem? Pick a file in the optimizer above and this reads the actual MP4 — codec, profile, both bitrates, audio track, faststart — then scores it and runs an honest health check against the specs TikTok handles best.</p>
     </div>
     <div class="panel">
       <div class="score-flex">
@@ -361,7 +395,7 @@ footer .wrap{display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between}
         </div>
         <div class="verdict">
           <h3 id="verdictTitle">Analyze the file you picked above</h3>
-          <p id="verdictText">Choose a video in the optimizer (or drop one here) and the score appears instantly — no upload, everything is measured locally in your browser.</p>
+          <p id="verdictText">Choose a video in the optimizer and the score, the full technical breakdown and the health check appear instantly — no upload, everything is measured locally in your browser.</p>
           <div class="specgrid" style="margin-top:16px">
             <div class="spec"><div class="k">Resolution verdict</div><div class="v" id="aRes">—</div></div>
             <div class="spec"><div class="k">FPS verdict</div><div class="v" id="aFps">—</div></div>
@@ -370,6 +404,90 @@ footer .wrap{display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between}
           </div>
         </div>
       </div>
+
+      <div id="detailWrap" style="display:none">
+        <h3 class="detail-head">Full technical breakdown</h3>
+        <div class="specgrid">
+          <div class="spec"><div class="k">Container</div><div class="v" id="dContainer">—</div></div>
+          <div class="spec"><div class="k">Video codec</div><div class="v" id="dCodec">—</div></div>
+          <div class="spec"><div class="k">Codec profile</div><div class="v" id="dProfile">—</div></div>
+          <div class="spec"><div class="k">Resolution</div><div class="v" id="dRes">—</div></div>
+          <div class="spec"><div class="k">Frame rate</div><div class="v" id="dFps">—</div></div>
+          <div class="spec"><div class="k">Duration</div><div class="v" id="dDur">—</div></div>
+          <div class="spec"><div class="k">Overall bitrate</div><div class="v" id="dOverall">—</div></div>
+          <div class="spec"><div class="k">Video bitrate</div><div class="v" id="dVBit">—</div></div>
+          <div class="spec"><div class="k">Audio track</div><div class="v" id="dAudio">—</div></div>
+          <div class="spec"><div class="k">Audio sample rate</div><div class="v" id="dARate">—</div></div>
+          <div class="spec"><div class="k">File size</div><div class="v" id="dSize">—</div></div>
+          <div class="spec"><div class="k">Faststart (moov first)</div><div class="v" id="dFast">—</div></div>
+        </div>
+        <h3 class="detail-head">Health check</h3>
+        <ul class="check-list" id="healthList"></ul>
+        <p class="hero-note">These checks compare your file against widely recommended TikTok upload specs. A pass means the file matches the guideline — it is not a guarantee of reach, and TikTok still re-processes every upload on its own side.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- LINK ANALYZER -->
+  <section class="sec" id="linkcheck">
+    <div class="sec-head">
+      <span class="tag">Link check</span>
+      <h2>TikTok Link Analyzer</h2>
+      <p>Already posted? Paste the video's TikTok link and see its public basics — title, author and thumbnail — fetched live from TikTok's public oEmbed service.</p>
+    </div>
+    <div class="panel">
+      <div class="link-row">
+        <input type="url" id="ttUrl" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://www.tiktok.com/@user/video/1234567890" aria-label="TikTok video URL" />
+        <button type="button" class="btn btn-pink" id="ttBtn">Check link</button>
+      </div>
+      <div class="msg err" id="ttErr" role="alert"></div>
+      <div class="link-result" id="ttResult">
+        <img id="ttThumb" alt="TikTok video thumbnail" />
+        <div>
+          <div class="tt-title" id="ttTitle">—</div>
+          <div class="tt-author">by <a id="ttAuthor" href="#" target="_blank" rel="noopener">—</a></div>
+          <div class="tt-meta mono" id="ttMeta">—</div>
+        </div>
+      </div>
+      <div class="note-box"><b>What this tool cannot show — and why:</b> TikTok does not give outside tools a video's view or like counts, FPS, codec, or any "shadow ban" status from a link, so this analyzer does not show them either. Any site claiming a link-only shadow-ban check is guessing. For real technical data, run the video <b>file</b> through the analyzer above.</div>
+    </div>
+  </section>
+
+  <!-- BEST UPLOAD TIMES -->
+  <section class="sec" id="times">
+    <div class="sec-head">
+      <span class="tag">Posting schedule</span>
+      <h2>Best Upload Times</h2>
+      <p>When you post matters almost as much as what you post. Pick your audience's country and your content type for a week of proven posting windows.</p>
+    </div>
+    <div class="panel">
+      <div class="sel-row">
+        <label>Audience country
+          <select id="btCountry">
+            <option value="Bangladesh" selected>Bangladesh</option>
+            <option value="India">India</option>
+            <option value="Indonesia">Indonesia</option>
+            <option value="USA">USA</option>
+            <option value="UK">UK</option>
+          </select>
+        </label>
+        <label>Content category
+          <select id="btCat">
+            <option value="general" selected>General</option>
+            <option value="entertainment">Entertainment</option>
+            <option value="fashion">Fashion &amp; Style</option>
+            <option value="business">Business</option>
+            <option value="education">Education</option>
+            <option value="gaming">Gaming</option>
+          </select>
+        </label>
+      </div>
+      <table class="times-table" id="btTable" aria-label="Best posting windows by day of week">
+        <thead><tr><th>Day</th><th>Best window</th><th>Also good</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <p class="bt-tip" id="btTip"></p>
+      <p class="hero-note">General guidance based on widely reported TikTok usage patterns for each region — not analytics from your personal account. Times are local to the selected country. Once your account unlocks TikTok's own analytics, those numbers beat any generic table.</p>
     </div>
   </section>
 
@@ -465,6 +583,10 @@ footer .wrap{display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between}
     <details>
       <summary>Why are there daily limits on Free? <span class="plus">+</span></summary>
       <div class="ans">The Free tier covers casual posters — 3 videos a day up to 100 MB each. Booster and Premium raise the size and daily caps for creators who post constantly or work with long 4K captures.</div>
+    </details>
+    <details>
+      <summary>Can you check my video's views or shadow-ban status from its link? <span class="plus">+</span></summary>
+      <div class="ans">No — and neither can anyone else. TikTok's public link data (the oEmbed service our Link Analyzer uses) returns only the <b>title, author and thumbnail</b>. View counts, likes, FPS, codec and any restriction status are not exposed to outside tools, so tools that claim to check them from a link are estimating or inventing numbers. If you want real technical facts about a video, analyze the <b>file</b> — that data is actually in there.</div>
     </details>
   </section>
 
@@ -653,6 +775,10 @@ function loadFile(f){
     f.arrayBuffer().then(function(buf){
       var u8=new Uint8Array(buf);
       meta.codec=findCodec(u8); meta.fps=measureFps(u8);
+      var det=parseDetail(u8,f);
+      meta.detail=det;
+      if(det.fps) meta.fps=Math.round(det.fps);
+      if(det.codec && det.codec!=="—") meta.codec=det.codec;
       var boxes=parseBoxes(u8,0,u8.length);
       var moov=boxes.filter(function(b){return b.type==="moov";})[0];
       var mdat=boxes.filter(function(b){return b.type==="mdat";})[0];
@@ -716,6 +842,7 @@ function runAnalyzer(m){
     : score>=55
     ? "Respectable source. The optimizer fixes the container side; for the next export, push bitrate toward 40 Mbps+ if you can."
     : "The container fix still helps, but the bigger win is re-exporting: 1080×1920 or higher, 60 FPS, and the highest bitrate your editor offers.";
+  renderDetail(m);
 }
 
 /* ---------- the optimizer engine ----------
@@ -835,6 +962,227 @@ $("againBtn").addEventListener("click", function(){
   $("fileInfo").classList.remove("on"); optBtn.disabled=true;
   window.scrollTo({top:document.getElementById("optimizer").offsetTop-70, behavior:"smooth"});
 });
+
+/* ---------- detailed file parser (analyzer) ---------- */
+function findTypeOff(u8,from,to,t){
+  for(var i=from;i+4<=to;i++){
+    if(u8[i]===t.charCodeAt(0)&&u8[i+1]===t.charCodeAt(1)&&u8[i+2]===t.charCodeAt(2)&&u8[i+3]===t.charCodeAt(3)) return i;
+  }
+  return -1;
+}
+function parseDetail(u8,file){
+  var d={container:"—",codec:"—",profile:"—",frames:0,fps:0,constant:null,trackDur:0,vBitrate:0,audio:"None found",aRate:"—",size:file.size};
+  var top=parseBoxes(u8,0,u8.length);
+  var ftyp=top.filter(function(b){return b.type==="ftyp";})[0];
+  if(ftyp && ftyp.size>=12){
+    var brand=typeAt(u8,ftyp.start+8);
+    d.container = brand==="qt  " ? "MOV · QuickTime" : "MP4 · "+brand.trim();
+  }
+  var moov=top.filter(function(b){return b.type==="moov";})[0];
+  if(!moov) return d;
+  parseBoxes(u8,moov.start+moov.header,moov.start+moov.size).forEach(function(tb){
+    if(tb.type!=="trak") return;
+    var t={handler:"",format:"",profile:"",frames:0,bytes:0,deltas:{},timescale:0,durUnits:0,aRate:0};
+    walk(u8,tb.start+tb.header,tb.start+tb.size,function(b){
+      var cs=b.start+b.header;
+      if(b.type==="hdlr" && b.size>=b.header+12){ t.handler=typeAt(u8,cs+8); }
+      if(b.type==="mdhd" && b.size>=b.header+20){
+        var avail=b.size-b.header;
+        var dv=new DataView(u8.buffer,u8.byteOffset+cs,Math.min(32,avail)), ver=dv.getUint8(0);
+        if(ver===1 && avail>=32){ t.timescale=dv.getUint32(20,false); t.durUnits=Number(dv.getBigUint64(24,false)); }
+        else if(ver===0){ t.timescale=dv.getUint32(12,false); t.durUnits=dv.getUint32(16,false); }
+      }
+      if(b.type==="stsd" && b.size>=b.header+16){
+        var es=cs+8;
+        t.format=typeAt(u8,es+4);
+        if((t.handler==="soun"||t.format==="mp4a") && es+36<=u8.length){
+          var sr=new DataView(u8.buffer,u8.byteOffset+es+32,4).getUint32(0,false);
+          t.aRate=sr>>>16;
+        }
+        var ai=findTypeOff(u8,cs,b.start+b.size,"avcC");
+        if(ai>=0 && ai+6<=u8.length){
+          var p=u8[ai+5];
+          t.profile=({66:"Baseline",77:"Main",88:"Extended",100:"High",110:"High 10",122:"High 4:2:2",244:"High 4:4:4"})[p]||("Profile "+p);
+        }
+        var hi=findTypeOff(u8,cs,b.start+b.size,"hvcC");
+        if(hi>=0 && hi+6<=u8.length){
+          var hp=u8[hi+5]&31;
+          t.profile = hp===1 ? "Main" : hp===2 ? "Main 10" : ("Profile "+hp);
+        }
+      }
+      if(b.type==="stsz" && b.size>=b.header+12){
+        var dv2=new DataView(u8.buffer,u8.byteOffset+cs,12);
+        var ss=dv2.getUint32(4,false), cnt=dv2.getUint32(8,false);
+        t.frames=cnt;
+        if(ss>0){ t.bytes=ss*cnt; }
+        else{
+          var sum=0, lim=Math.min(cnt,2000000);
+          for(var i=0;i<lim;i++){ sum+=new DataView(u8.buffer,u8.byteOffset+cs+12+i*4,4).getUint32(0,false); }
+          t.bytes=sum;
+        }
+      }
+      if(b.type==="stts" && b.size>=b.header+8){
+        var n=new DataView(u8.buffer,u8.byteOffset+cs+4,4).getUint32(0,false), tf=0;
+        for(var j=0;j<n && j<100000;j++){
+          var e=new DataView(u8.buffer,u8.byteOffset+cs+8+j*8,8);
+          tf+=e.getUint32(0,false); t.deltas[e.getUint32(4,false)]=1;
+        }
+        if(tf) t.frames=tf;
+      }
+    },0);
+    var durSec = t.timescale ? t.durUnits/t.timescale : 0;
+    if(t.handler==="vide"){
+      d.codec=({avc1:"H.264 / AVC",avc3:"H.264 / AVC",hvc1:"H.265 / HEVC",hev1:"H.265 / HEVC",av01:"AV1",mp4v:"MPEG-4 Part 2",vp09:"VP9"})[t.format]||t.format||d.codec;
+      d.profile=t.profile||"—";
+      d.frames=t.frames; d.trackDur=durSec;
+      d.fps = (durSec && t.frames) ? Math.round((t.frames/durSec)*100)/100 : 0;
+      var dk=Object.keys(t.deltas).length;
+      d.constant = dk===0 ? null : dk<=1;
+      d.vBitrate = (durSec && t.bytes) ? Math.round(t.bytes*8/durSec) : 0;
+    }
+    if(t.handler==="soun"){
+      d.audio = t.format==="mp4a" ? "AAC" : (t.format||"Present");
+      if(t.aRate) d.aRate = t.aRate.toLocaleString("en-US")+" Hz";
+    }
+  });
+  return d;
+}
+function fmtDur(s){
+  if(!s || !isFinite(s)) return "—";
+  var mm=Math.floor(s/60), ss=Math.round(s%60);
+  if(ss===60){ mm++; ss=0; }
+  return mm+":"+(ss<10?"0":"")+ss+" · "+s.toFixed(1)+"s";
+}
+function renderDetail(m){
+  var d=m.detail; if(!d) return;
+  $("detailWrap").style.display="block";
+  $("dContainer").textContent=d.container;
+  $("dCodec").textContent=d.codec;
+  $("dProfile").textContent=d.profile;
+  $("dRes").textContent = m.w ? m.w+" × "+m.h : "—";
+  $("dFps").textContent = d.fps ? (Math.round(d.fps*100)/100)+" FPS"+(d.constant===true?" · constant":d.constant===false?" · variable":"") : "—";
+  $("dDur").textContent=fmtDur(d.trackDur||m.dur);
+  $("dOverall").textContent=fmtBitrate(m.bitrate);
+  $("dVBit").textContent=fmtBitrate(d.vBitrate);
+  $("dAudio").textContent=d.audio;
+  $("dARate").textContent=d.aRate;
+  $("dSize").textContent=fmtSize(d.size);
+  $("dFast").textContent = m._moovFirst ? "Yes — moov before mdat" : (m.faststart||"—");
+  var items=[], longSide=Math.max(m.w,m.h);
+  if(longSide>=1920) items.push({s:1,t:"<b>Resolution "+m.w+"×"+m.h+"</b> — 1080p or higher, the baseline for crisp TikTok playback."});
+  else if(longSide>0) items.push({s:0,t:"<b>Resolution "+m.w+"×"+m.h+"</b> — below 1080p on the long side. Re-export at 1080×1920 or higher if your source allows it."});
+  if(d.fps>=59) items.push({s:1,t:"<b>"+Math.round(d.fps)+" FPS</b> — high frame rate, ideal for gaming clips and fast motion."});
+  else if(d.fps>=29) items.push({s:1,t:"<b>"+Math.round(d.fps)+" FPS</b> — standard frame rate, fine for most content."});
+  else if(d.fps>0) items.push({s:0,t:"<b>"+Math.round(d.fps)+" FPS</b> — under 30 FPS will look choppy once posted."});
+  if(d.constant===true) items.push({s:1,t:"<b>Constant frame rate</b> — TikTok's pipeline handles CFR exports most predictably."});
+  else if(d.constant===false) items.push({s:0,t:"<b>Variable frame rate</b> — common in screen recordings. If audio drifts out of sync after posting, re-export as constant frame rate."});
+  if(m._moovFirst) items.push({s:1,t:"<b>Faststart is on</b> — the moov index already sits before the video data."});
+  else items.push({s:0,t:"<b>Faststart is off</b> — the index sits at the end of the file. The optimizer above fixes this in one click."});
+  var mbps=(d.vBitrate||m.bitrate)/1e6;
+  if(mbps>=10 && mbps<=40) items.push({s:1,t:"<b>Bitrate "+mbps.toFixed(1)+" Mbps</b> — inside the 10–40 Mbps range widely recommended for high-quality uploads."});
+  else if(mbps>40) items.push({s:0,t:"<b>Bitrate "+mbps.toFixed(1)+" Mbps</b> — above the 40 Mbps guideline. A rich source, but TikTok will compress it harder and the extra data rarely survives."});
+  else if(mbps>0) items.push({s:0,t:"<b>Bitrate "+mbps.toFixed(1)+" Mbps</b> — below the 10 Mbps guideline for high quality; expect softer detail after posting."});
+  if(d.audio!=="None found") items.push({s:1,t:"<b>Audio track present</b> — "+d.audio+(d.aRate!=="—" ? " at "+d.aRate : "")+"."});
+
+  else items.push({s:0,t:"<b>No audio track found</b> — fine for a silent clip, a problem if the video is supposed to have sound."});
+  if(d.codec.indexOf("H.264")===0 || d.codec.indexOf("H.265")===0) items.push({s:1,t:"<b>"+d.codec+"</b> — a codec TikTok's pipeline is built around."});
+  else if(d.codec!=="—") items.push({s:0,t:"<b>Codec: "+d.codec+"</b> — TikTok accepts it, but H.264/H.265 sources are handled most predictably."});
+  var hl=$("healthList"); hl.innerHTML="";
+  items.forEach(function(it){
+    var li=document.createElement("li");
+    var ic=document.createElement("span");
+    ic.className="ic "+(it.s?"good":"warn"); ic.textContent=it.s?"✓":"!";
+    var tx=document.createElement("span"); tx.innerHTML=it.t;
+    li.appendChild(ic); li.appendChild(tx); hl.appendChild(li);
+  });
+}
+
+/* ---------- TikTok link analyzer (oEmbed) ---------- */
+var ttBtn=$("ttBtn"), ttUrl=$("ttUrl");
+function ttError(msg){
+  var e=$("ttErr"); e.textContent=msg; e.classList.add("on");
+}
+function checkLink(){
+  $("ttErr").classList.remove("on");
+  $("ttResult").classList.remove("on");
+  var url=ttUrl.value.trim();
+  if(!/^https?:\/\//i.test(url) || !/tiktok\.com/i.test(url)){
+    ttError("That doesn't look like a TikTok link. Paste the full video URL — e.g. https://www.tiktok.com/@user/video/1234567890");
+    return;
+  }
+  ttBtn.disabled=true; ttBtn.textContent="Checking…";
+  fetch("https://www.tiktok.com/oembed?url="+encodeURIComponent(url))
+    .then(function(r){ if(!r.ok) throw new Error("http "+r.status); return r.json(); })
+    .then(function(d){
+      if(!d || (!d.title && !d.author_name)) throw new Error("empty response");
+      $("ttTitle").textContent=d.title||"(untitled video)";
+      var a=$("ttAuthor");
+      a.textContent=d.author_name||"Unknown author";
+      a.href=d.author_url||url;
+      var img=$("ttThumb");
+      if(d.thumbnail_url){ img.src=d.thumbnail_url; img.style.display=""; }
+      else img.style.display="none";
+      $("ttMeta").textContent="Provider: "+(d.provider_name||"TikTok")+" · via TikTok oEmbed"+(d.thumbnail_width&&d.thumbnail_height ? " · thumbnail "+d.thumbnail_width+"×"+d.thumbnail_height : "");
+      $("ttResult").classList.add("on");
+    })
+    .catch(function(){
+      ttError("Couldn't fetch that video's public info. The link may be private or deleted, the URL may be incomplete, or TikTok may be unreachable right now — check the link and try again.");
+    })
+    .then(function(){ ttBtn.disabled=false; ttBtn.textContent="Check link"; });
+}
+ttBtn.addEventListener("click", checkLink);
+ttUrl.addEventListener("keydown", function(e){ if(e.key==="Enter"){ e.preventDefault(); checkLink(); } });
+
+/* ---------- best upload times ---------- */
+var BT_DAYS=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+var BT={
+  "Bangladesh":[
+    {p:[19,22]},{p:[19,22]},{p:[19,22]},{p:[20,23]},
+    {p:[15,18],s:[20,23]},{p:[19,22],s:[12,14]},{p:[19,22]}
+  ],
+  "India":[
+    {p:[19,22],s:[7,9]},{p:[19,22],s:[7,9]},{p:[19,22],s:[7,9]},{p:[19,22],s:[7,9]},{p:[19,22],s:[7,9]},
+    {p:[11,13],s:[19,22]},{p:[11,13],s:[19,22]}
+  ],
+  "Indonesia":[
+    {p:[18,21],s:[12,13]},{p:[18,21],s:[12,13]},{p:[18,21],s:[12,13]},{p:[18,21],s:[12,13]},{p:[18,21],s:[12,13]},
+    {p:[10,12],s:[18,21]},{p:[10,12],s:[18,21]}
+  ],
+  "USA":[
+    {p:[18,21],s:[7,9]},{p:[18,21],s:[7,9]},{p:[18,21],s:[7,9]},{p:[18,21],s:[7,9]},{p:[18,21],s:[12,14]},
+    {p:[10,12],s:[18,21]},{p:[10,12],s:[18,21]}
+  ],
+  "UK":[
+    {p:[18,21],s:[12,13]},{p:[18,21],s:[12,13]},{p:[18,21],s:[12,13]},{p:[18,21],s:[12,13]},{p:[18,21],s:[12,13]},
+    {p:[11,13],s:[18,21]},{p:[11,13],s:[18,21]}
+  ]
+};
+var BT_CAT={
+  general:{shift:0,tip:"Evening prime time is the safest all-round window. Post 30–60 minutes before the peak so your video is already indexed when the scrolling surge hits."},
+  entertainment:{shift:0,tip:"Entertainment rides the evening prime-time wave hardest — Thursday through Saturday evenings are usually the strongest windows of the week."},
+  fashion:{shift:-1,tip:"Fashion & style gets an extra lift around getting-ready hours — late afternoon into early evening on weekdays, and weekend late mornings for hauls and GRWM content."},
+  business:{shift:-11,tip:"Business content follows workday rhythms — the morning commute scroll and the lunch break outperform late evenings. The main windows above are shifted to the morning for this category."},
+  education:{shift:-5,tip:"Education and how-to content peaks in the afternoon and early evening, when viewers have time for longer, save-worthy videos. The main windows above are shifted earlier for this category."},
+  gaming:{shift:2,tip:"Gaming audiences skew late — evenings running into the night, with Friday and Saturday nights the biggest windows of the week. The main windows above are shifted later for this category."}
+};
+function fmtH(h){
+  h=((h%24)+24)%24;
+  var ap=h<12?"AM":"PM", hh=h%12; if(hh===0) hh=12;
+  return hh+" "+ap;
+}
+function fmtWin(w,shift){ return fmtH(w[0]+shift)+" – "+fmtH(w[1]+shift); }
+function renderBT(){
+  var cat=BT_CAT[$("btCat").value]||BT_CAT.general;
+  var rows=(BT[$("btCountry").value]||BT["Bangladesh"]).map(function(r,i){
+    return "<tr><td class=\"day\">"+BT_DAYS[i]+"</td><td class=\"best\">"+fmtWin(r.p,cat.shift)+"</td><td class=\"also\">"+(r.s?fmtWin(r.s,0):"—")+"</td></tr>";
+  }).join("");
+  $("btTable").querySelector("tbody").innerHTML=rows;
+  var sel=$("btCat");
+  $("btTip").innerHTML="<b>"+sel.options[sel.selectedIndex].text+" tip:</b> "+cat.tip;
+}
+$("btCountry").addEventListener("change", renderBT);
+$("btCat").addEventListener("change", renderBT);
+renderBT();
 })();
 </script>
 </body>
