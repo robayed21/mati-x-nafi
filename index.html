@@ -196,10 +196,14 @@ details .ans b{color:var(--ink)}
 .link-row{display:flex;gap:10px;flex-wrap:wrap}
 .link-row input{flex:1;min-width:220px;background:var(--bg2);border:1px solid var(--line2);border-radius:11px;color:var(--ink);font-family:inherit;font-size:15px;padding:13px 15px}
 .link-row input:focus{outline:2px solid var(--cyan);outline-offset:1px;border-color:transparent}
-.link-result{display:none;gap:18px;margin-top:20px;align-items:flex-start}
+.link-result{display:none;gap:22px;margin-top:20px;align-items:flex-start;flex-wrap:wrap}
 .link-result.on{display:flex}
-.link-result img{width:120px;aspect-ratio:9/16;object-fit:cover;border-radius:12px;border:1px solid var(--line2);background:#000;flex:none}
-@media(max-width:560px){.link-result img{width:92px}}
+.tt-player{flex:none}
+.tt-player iframe{width:min(300px,80vw);aspect-ratio:9/16;border:0;border-radius:12px;background:#000;display:block}
+.tt-player blockquote{margin:0;max-width:300px}
+.tt-info{flex:1;min-width:230px}
+.tt-info img{width:120px;aspect-ratio:9/16;object-fit:cover;border-radius:12px;border:1px solid var(--line2);background:#000;display:block;margin-bottom:14px}
+.tt-limited{margin-top:16px;border:1px solid var(--line2);background:var(--bg2);border-radius:10px;padding:11px 13px;color:var(--muted);font-size:13.5px}
 .tt-title{font-weight:800;font-size:16.5px;word-break:break-word}
 .tt-author{color:var(--muted);margin-top:4px}
 .tt-author a{color:var(--cyan);font-weight:700;text-decoration:none}
@@ -433,7 +437,7 @@ footer .wrap{display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between}
     <div class="sec-head">
       <span class="tag">Link check</span>
       <h2>TikTok Link Analyzer</h2>
-      <p>Already posted? Paste the video's TikTok link and see its public basics — title, author and thumbnail — fetched live from TikTok's public oEmbed service.</p>
+      <p>Already posted? Paste the video's TikTok link to load its embedded player plus whatever public basics TikTok shares for it — title, author and thumbnail when available — fetched live from TikTok's public oEmbed service.</p>
     </div>
     <div class="panel">
       <div class="link-row">
@@ -442,11 +446,14 @@ footer .wrap{display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between}
       </div>
       <div class="msg err" id="ttErr" role="alert"></div>
       <div class="link-result" id="ttResult">
-        <img id="ttThumb" alt="TikTok video thumbnail" />
-        <div>
-          <div class="tt-title" id="ttTitle">—</div>
-          <div class="tt-author">by <a id="ttAuthor" href="#" target="_blank" rel="noopener">—</a></div>
+        <div class="tt-player" id="ttPlayer"></div>
+        <div class="tt-info">
+          <img id="ttThumb" alt="TikTok video thumbnail" style="display:none" />
+          <div class="tt-title" id="ttTitle" style="display:none">—</div>
+          <div class="tt-author" id="ttAuthorWrap" style="display:none">by <a id="ttAuthor" href="#" target="_blank" rel="noopener">—</a></div>
           <div class="tt-meta mono" id="ttMeta">—</div>
+          <div style="margin-top:14px"><a class="btn btn-ghost" id="ttOpen" href="#" target="_blank" rel="noopener">Open on TikTok</a></div>
+          <div class="tt-limited" id="ttLimited" style="display:none"></div>
         </div>
       </div>
       <div class="note-box"><b>What this tool cannot show — and why:</b> TikTok does not give outside tools a video's view or like counts, FPS, codec, or any "shadow ban" status from a link, so this analyzer does not show them either. Any site claiming a link-only shadow-ban check is guessing. For real technical data, run the video <b>file</b> through the analyzer above.</div>
@@ -1102,6 +1109,13 @@ var ttBtn=$("ttBtn"), ttUrl=$("ttUrl");
 function ttError(msg){
   var e=$("ttErr"); e.textContent=msg; e.classList.add("on");
 }
+function parseTT(url){
+  var m=url.match(/tiktok\.com\/@([^\/\?#]+)\/video\/(\d+)/i);
+  if(m){ try{ return {user:decodeURIComponent(m[1]), id:m[2]}; }catch(e){ return {user:m[1], id:m[2]}; } }
+  m=url.match(/tiktok\.com\/(?:video|v)\/(\d+)/i);
+  if(m) return {user:null, id:m[1]};
+  return {user:null, id:null};
+}
 function checkLink(){
   $("ttErr").classList.remove("on");
   $("ttResult").classList.remove("on");
@@ -1110,19 +1124,60 @@ function checkLink(){
     ttError("That doesn't look like a TikTok link. Paste the full video URL — e.g. https://www.tiktok.com/@user/video/1234567890");
     return;
   }
+  var parsed=parseTT(url);
   ttBtn.disabled=true; ttBtn.textContent="Checking…";
   fetch("https://www.tiktok.com/oembed?url="+encodeURIComponent(url))
     .then(function(r){ if(!r.ok) throw new Error("http "+r.status); return r.json(); })
     .then(function(d){
-      if(!d || (!d.title && !d.author_name)) throw new Error("empty response");
-      $("ttTitle").textContent=d.title||"(untitled video)";
-      var a=$("ttAuthor");
-      a.textContent=d.author_name||"Unknown author";
-      a.href=d.author_url||url;
+      if(!d || typeof d!=="object") throw new Error("invalid response");
+      /* Any HTTP 200 JSON from oEmbed is a success — build the card from
+         whatever fields TikTok actually sent (title/author/thumbnail may
+         legitimately be absent from the response right now). */
+      var id = parsed.id || (d.embed_product_id ? String(d.embed_product_id) : null);
+      if(!id && d.html){ var hm=String(d.html).match(/video\/(\d+)/); if(hm) id=hm[1]; }
+      var user = parsed.user || null;
+      if(!user && d.author_url){ var am=String(d.author_url).match(/@([^\/\?#]+)/); if(am) user=am[1]; }
+      var canonical = (user && id) ? "https://www.tiktok.com/@"+user+"/video/"+id : url;
+      var player=$("ttPlayer"); player.innerHTML="";
+      if(id){
+        var ifr=document.createElement("iframe");
+        ifr.src="https://www.tiktok.com/player/v1/"+id;
+        ifr.title="Embedded TikTok video player";
+        ifr.setAttribute("allow","encrypted-media; picture-in-picture; fullscreen");
+        ifr.setAttribute("allowfullscreen","");
+        ifr.loading="lazy";
+        player.appendChild(ifr);
+      } else if(d.html){
+        player.innerHTML=d.html;
+        var sc=document.createElement("script");
+        sc.async=true; sc.src="https://www.tiktok.com/embed.js";
+        player.appendChild(sc);
+      }
+      var missing=[];
+      var titleEl=$("ttTitle");
+      if(d.title){ titleEl.textContent=d.title; titleEl.style.display=""; }
+      else { titleEl.style.display="none"; missing.push("title"); }
+      var aw=$("ttAuthorWrap");
+      if(d.author_name){
+        var a=$("ttAuthor");
+        a.textContent=d.author_name;
+        a.href=d.author_url||canonical;
+        aw.style.display="";
+      } else { aw.style.display="none"; missing.push("author"); }
       var img=$("ttThumb");
       if(d.thumbnail_url){ img.src=d.thumbnail_url; img.style.display=""; }
-      else img.style.display="none";
-      $("ttMeta").textContent="Provider: "+(d.provider_name||"TikTok")+" · via TikTok oEmbed"+(d.thumbnail_width&&d.thumbnail_height ? " · thumbnail "+d.thumbnail_width+"×"+d.thumbnail_height : "");
+      else { img.style.display="none"; missing.push("thumbnail"); }
+      var bits=["Provider: "+(d.provider_name||"TikTok")];
+      if(id) bits.push("Video ID: "+id);
+      if(user) bits.push("@"+user);
+      bits.push("via TikTok oEmbed");
+      $("ttMeta").textContent=bits.join(" · ");
+      $("ttOpen").href=canonical;
+      var lim=$("ttLimited");
+      if(missing.length){
+        lim.textContent="TikTok returned limited public data for this link right now — no "+missing.join(", ")+" was included in its response, so only what TikTok actually sent is shown above.";
+        lim.style.display="";
+      } else lim.style.display="none";
       $("ttResult").classList.add("on");
     })
     .catch(function(){
