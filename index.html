@@ -225,6 +225,25 @@ details .ans b{color:var(--ink)}
 .bt-tip b{color:var(--ink)}
 footer{margin-top:80px;border-top:1px solid var(--line);padding:30px 0 44px;color:var(--faint);font-size:13.5px}
 footer .wrap{display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between}
+/* studio tools */
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+@media(max-width:640px){.field-grid{grid-template-columns:1fr}}
+.field label{display:block;font-size:13px;color:var(--muted);font-weight:700;margin-bottom:7px}
+.st-input{width:100%;background:var(--bg2);border:1px solid var(--line2);border-radius:11px;color:var(--ink);font-family:inherit;font-size:15px;font-weight:700;padding:12px 14px}
+.st-input:focus{outline:2px solid var(--cyan);outline-offset:1px;border-color:transparent}
+.st-input[disabled]{opacity:.45}
+.mini-btns{margin-top:8px}
+.mini-btn{background:var(--panel2);border:1px solid var(--line2);color:var(--muted);font-family:inherit;font-size:12.5px;font-weight:700;padding:6px 11px;border-radius:8px;cursor:pointer}
+.mini-btn:hover{color:var(--ink);border-color:var(--cyan)}
+.tool-note{color:var(--muted);font-size:14.5px;margin:0 0 16px}
+.studio-stage{display:none;margin-top:20px;border-top:1px solid var(--line);padding-top:20px}
+.studio-stage.on{display:block}
+.radio-row{display:flex;gap:8px;flex-wrap:wrap}
+.chip-pick{border:1px solid var(--line2);background:var(--bg2);color:var(--ink);border-radius:10px;padding:11px 14px;cursor:pointer;font-family:inherit;font-weight:700;font-size:14px}
+.chip-pick[aria-pressed="true"]{border-color:var(--cyan);background:#0a1d1f;color:var(--cyan)}
+.studio-preview{margin-top:14px}
+.studio-preview video{width:100%;max-height:440px;border-radius:12px;background:#000;display:block;border:1px solid var(--line)}
+#stResultVideo{width:min(320px,100%);max-height:480px;border-radius:12px;background:#000;display:block;border:1px solid var(--line2);margin-bottom:16px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 </style>
 </head>
@@ -235,6 +254,7 @@ footer .wrap{display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between}
     <a class="logo" href="#top" aria-label="Mati X Nafi — home"><span class="logo-mark" aria-hidden="true">✕</span>Mati&nbsp;<span class="x">X</span>&nbsp;Nafi</a>
     <div class="nav-links">
       <a href="#optimizer">Optimizer</a>
+      <a href="#studio">Studio</a>
       <a href="#compare">Before / After</a>
       <a href="#analyzer">Analyzer</a>
       <a href="#linkcheck">Link Check</a>
@@ -355,6 +375,139 @@ footer .wrap{display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between}
           <button type="button" class="btn btn-ghost" id="againBtn">Optimize another</button>
         </div>
         <p class="hero-note">Post this file to TikTok instead of the original. For best results upload over Wi-Fi from the app, not the desktop site.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STUDIO TOOLS -->
+  <section class="sec" id="studio">
+    <div class="sec-head">
+      <span class="tag">Studio tools</span>
+      <h2>Compressor · Trim · 9:16 Crop</h2>
+      <p>Three hands-on editing tools powered by a real FFmpeg video engine that downloads once (~31 MB) and then runs entirely in your browser. Unlike the optimizer above, these tools do re-encode — that is how genuine compression, cutting and reframing work. Your video still never leaves your device.</p>
+    </div>
+
+    <div class="panel">
+      <div class="tier-row" role="group" aria-label="Choose a studio tool">
+        <button type="button" class="tier-pick tool-tab" data-tool="compress" aria-pressed="true">
+          <span class="t-name">Compressor <span class="price">SIZE ↓</span></span>
+          <span class="t-lim">Shrink a clip to a target file size</span>
+        </button>
+        <button type="button" class="tier-pick tool-tab" data-tool="trim" aria-pressed="false">
+          <span class="t-name">Trim <span class="price">CUT</span></span>
+          <span class="t-lim">Keep only the part you need</span>
+        </button>
+        <button type="button" class="tier-pick tool-tab" data-tool="crop" aria-pressed="false">
+          <span class="t-name">9:16 Crop <span class="price">1080×1920</span></span>
+          <span class="t-lim">Make any clip vertical for TikTok</span>
+        </button>
+      </div>
+
+      <div class="drop" id="stDrop" tabindex="0" role="button" aria-label="Choose or drop a video file for the studio tools">
+        <div class="big">Drop a video for the Studio</div>
+        <div class="small">or tap to browse — MP4 / MOV / WebM · processed locally, never uploaded</div>
+      </div>
+      <input type="file" id="stFileInput" accept="video/*,.mp4,.mov,.webm,.m4v" class="sr" />
+
+      <div class="fileinfo" id="stFileInfo">
+        <div class="fname" id="stName">—</div>
+        <div class="specgrid">
+          <div class="spec"><div class="k">Resolution</div><div class="v" id="stRes">—</div></div>
+          <div class="spec"><div class="k">Duration</div><div class="v" id="stDur">—</div></div>
+          <div class="spec"><div class="k">Size</div><div class="v" id="stSize">—</div></div>
+          <div class="spec"><div class="k">Bitrate</div><div class="v" id="stBit">—</div></div>
+        </div>
+        <div class="studio-preview">
+          <video id="stVideo" controls playsinline preload="metadata"></video>
+        </div>
+      </div>
+
+      <!-- COMPRESS -->
+      <div class="studio-stage on" id="stage-compress">
+        <div class="field-grid">
+          <div class="field">
+            <label for="cpTarget">Target size</label>
+            <select id="cpTarget" class="st-input">
+              <option value="10">Under 10 MB — messaging apps</option>
+              <option value="25" selected>Under 25 MB</option>
+              <option value="50">Under 50 MB</option>
+              <option value="100">Under 100 MB</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="cpRes">Max resolution</label>
+            <select id="cpRes" class="st-input">
+              <option value="0" selected>Keep original</option>
+              <option value="1080">Up to 1080p</option>
+              <option value="720">Up to 720p — smaller, faster</option>
+            </select>
+          </div>
+        </div>
+        <p class="tool-note">The engine works out the exact video bitrate that lands the finished file under your target, then encodes H.264 + AAC with a faststart layout — ready to post or share anywhere.</p>
+        <button type="button" class="btn btn-cyan st-run" data-run="compress" disabled>Compress video</button>
+      </div>
+
+      <!-- TRIM -->
+      <div class="studio-stage" id="stage-trim">
+        <div class="field-grid">
+          <div class="field">
+            <label for="trStart">Start (seconds)</label>
+            <input type="number" id="trStart" class="st-input" min="0" step="0.1" value="0" />
+            <div class="mini-btns"><button type="button" class="mini-btn" id="trStartNow">Set to playhead</button></div>
+          </div>
+          <div class="field">
+            <label for="trEnd">End (seconds)</label>
+            <input type="number" id="trEnd" class="st-input" min="0" step="0.1" value="0" />
+            <div class="mini-btns"><button type="button" class="mini-btn" id="trEndNow">Set to playhead</button></div>
+          </div>
+        </div>
+        <p class="tool-note" id="trSummary">Pick a file above, then set the start and end. Play the preview and use “Set to playhead” to mark the exact moments.</p>
+        <button type="button" class="btn btn-cyan st-run" data-run="trim" disabled>Trim video</button>
+      </div>
+
+      <!-- CROP -->
+      <div class="studio-stage" id="stage-crop">
+        <div class="field-grid">
+          <div class="field">
+            <label>Fill mode</label>
+            <div class="radio-row" role="group" aria-label="Crop fill mode">
+              <button type="button" class="chip-pick" data-cropmode="fill" aria-pressed="true">Fill frame — crop sides</button>
+              <button type="button" class="chip-pick" data-cropmode="blur" aria-pressed="false">Blurred background</button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="crFocus">Focus (fill mode)</label>
+            <select id="crFocus" class="st-input">
+              <option value="center" selected>Center</option>
+              <option value="left">Left</option>
+              <option value="right">Right</option>
+            </select>
+          </div>
+        </div>
+        <p class="tool-note">Output is always 1080 × 1920 (9:16). “Fill frame” cuts a vertical slice out of your clip; “Blurred background” keeps the whole frame visible over a blurred, zoomed copy of itself — the classic fix for landscape clips.</p>
+        <button type="button" class="btn btn-cyan st-run" data-run="crop" disabled>Convert to 9:16</button>
+      </div>
+
+      <div class="progress" id="stProgress">
+        <div class="pbar"><i id="stFill"></i></div>
+        <ul class="steps"><li class="now" id="stStatus">Preparing…</li></ul>
+      </div>
+
+      <div class="msg err" id="stErr" role="alert"></div>
+
+      <div class="result" id="stResult">
+        <h3 style="font-size:20px;font-weight:900" id="stResultTitle">Done</h3>
+        <div class="specgrid" style="margin:14px 0 16px">
+          <div class="spec"><div class="k">Before</div><div class="v" id="stRBefore">—</div></div>
+          <div class="spec"><div class="k">After</div><div class="v" id="stRAfter">—</div></div>
+          <div class="spec"><div class="k">Size change</div><div class="v" id="stRChange">—</div></div>
+          <div class="spec"><div class="k">Output</div><div class="v" id="stRFormat">—</div></div>
+        </div>
+        <video id="stResultVideo" controls playsinline></video>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <a class="btn btn-pink" id="stDl" href="#" download>Download result</a>
+          <button type="button" class="btn btn-ghost" id="stAgain">Back to the tools</button>
+        </div>
       </div>
     </div>
   </section>
@@ -584,6 +737,10 @@ footer .wrap{display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between}
       <div class="ans"><b>Never.</b> The optimizer runs entirely in your browser using the File API — the file is read, rebuilt and downloaded locally on your device. Close the tab and nothing remains anywhere.</div>
     </details>
     <details>
+      <summary>Do the Compressor, Trim and 9:16 Crop tools re-encode? <span class="plus">+</span></summary>
+      <div class="ans">Yes — genuine compression, cutting and reframing are impossible without decoding and re-encoding, so the Studio tools use a full FFmpeg engine. It downloads once (~31 MB), then runs <b>entirely in your browser</b>, exactly like the optimizer: your file is never uploaded anywhere. The trade-off is a small generational quality cost, kept minimal with high-quality settings (CRF 18 for trim and crop). The container Optimizer above remains the zero-re-encode tool.</div>
+    </details>
+    <details>
       <summary>Which files work best? <span class="plus">+</span></summary>
       <div class="ans">MP4 or MOV files with H.264, HEVC (H.265) or AV1 video. Vertical 1080 × 1920 is TikTok's baseline; 2160 × 3840 (4K vertical) at 60 or 120 FPS with a bitrate of 40 Mbps or more gives the pipeline the most to work with. The analyzer above scores your file on exactly these points.</div>
     </details>
@@ -602,7 +759,7 @@ footer .wrap{display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between}
 <footer>
   <div class="wrap">
     <span>Mati X Nafi — an independent tool. Not affiliated with TikTok or ByteDance.</span>
-    <span class="mono">100% client-side · No uploads · No re-encoding</span>
+    <span class="mono">100% client-side · No uploads · Files never leave your device</span>
   </div>
 </footer>
 
@@ -1104,6 +1261,229 @@ function renderDetail(m){
     li.appendChild(ic); li.appendChild(tx); hl.appendChild(li);
   });
 }
+
+/* ---------- studio tools: Compressor · Trim · 9:16 Crop ----------
+   Real re-encoding with FFmpeg (WebAssembly), loaded on demand from CDN.
+   Everything still runs locally — the file never leaves the device. */
+var FF_FFMPEG="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.15/dist/umd";
+var FF_UTIL="https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.2/dist/umd/index.js";
+var FF_CORE="https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/esm";
+var ff=null, ffReady=false, ffLoading=null;
+var stFile=null, stMeta=null, stBusy=false, stOutURL=null, stTool="compress", cropMode="fill";
+
+var stDrop=$("stDrop"), stInput=$("stFileInput");
+stDrop.addEventListener("click", function(){ if(!stBusy) stInput.click(); });
+stDrop.addEventListener("keydown", function(e){ if((e.key==="Enter"||e.key===" ")&&!stBusy){ e.preventDefault(); stInput.click(); } });
+["dragenter","dragover"].forEach(function(ev){ stDrop.addEventListener(ev,function(e){ e.preventDefault(); stDrop.classList.add("over"); }); });
+["dragleave","drop"].forEach(function(ev){ stDrop.addEventListener(ev,function(e){ e.preventDefault(); stDrop.classList.remove("over"); }); });
+stDrop.addEventListener("drop", function(e){ var f=e.dataTransfer.files[0]; if(f) loadStudioFile(f); });
+stInput.addEventListener("change", function(){ if(stInput.files[0]) loadStudioFile(stInput.files[0]); });
+
+function stErr(msg){ var e=$("stErr"); e.textContent=msg; e.classList.add("on"); }
+function stStatus(txt,pct){
+  $("stProgress").classList.add("on");
+  $("stStatus").textContent=txt;
+  if(typeof pct==="number"&&isFinite(pct)) $("stFill").style.width=Math.max(0,Math.min(100,Math.round(pct)))+"%";
+}
+function stSetRuns(on){
+  document.querySelectorAll(".st-run").forEach(function(b){ b.disabled=!on; });
+}
+function loadStudioFile(f){
+  if(stBusy) return;
+  if(!/video/i.test(f.type||"") && !/\.(mp4|mov|webm|mkv|m4v)$/i.test(f.name)){
+    stErr("That doesn't look like a video file. The Studio works with MP4, MOV, WebM and MKV clips.");
+    return;
+  }
+  $("stErr").classList.remove("on");
+  $("stResult").classList.remove("on");
+  stFile=f; stMeta=null; stSetRuns(false);
+  var url=URL.createObjectURL(f), v=$("stVideo");
+  v.src=url;
+  v.onloadedmetadata=function(){
+    stMeta={w:v.videoWidth,h:v.videoHeight,dur:v.duration||0};
+    $("stName").textContent=f.name;
+    $("stRes").textContent=stMeta.w?stMeta.w+" × "+stMeta.h:"—";
+    $("stDur").textContent=fmtDur(stMeta.dur);
+    $("stSize").textContent=fmtSize(f.size);
+    $("stBit").textContent=stMeta.dur?fmtBitrate(Math.round(f.size*8/stMeta.dur)):"—";
+    $("stFileInfo").classList.add("on");
+    var trS=$("trStart"), trE=$("trEnd");
+    trS.value="0"; trE.value=stMeta.dur?String(Math.round(stMeta.dur*10)/10):"0";
+    trS.max=stMeta.dur||0; trE.max=stMeta.dur||0;
+    updateTrimSummary();
+    stSetRuns(true);
+    if(f.size>400*1048576) stErr("Heads-up: this file is "+fmtSize(f.size)+". Browser-based encoding holds everything in memory, so very large files can be slow — or run out of memory on low-end phones. It will still try.");
+  };
+  v.onerror=function(){
+    stMeta=null; stSetRuns(false);
+    $("stFileInfo").classList.remove("on");
+    stErr("Your browser could not read this file's video track, so the Studio can't safely process it. An MP4 (H.264) export from CapCut, Premiere or HandBrake will work.");
+  };
+}
+
+/* trim helpers */
+function trimVals(){
+  var s=parseFloat($("trStart").value), e=parseFloat($("trEnd").value);
+  return {s:isFinite(s)?s:0, e:isFinite(e)?e:0};
+}
+function updateTrimSummary(){
+  if(!stMeta) return;
+  var t=trimVals();
+  $("trSummary").textContent="Full clip: "+stMeta.dur.toFixed(1)+"s · your trim: "+Math.max(0,t.e-t.s).toFixed(1)+"s ("+t.s.toFixed(1)+"s → "+t.e.toFixed(1)+"s). Play the preview and use “Set to playhead” to mark the exact moments.";
+}
+$("trStart").addEventListener("input", updateTrimSummary);
+$("trEnd").addEventListener("input", updateTrimSummary);
+$("trStartNow").addEventListener("click", function(){ $("trStart").value=String(Math.round($("stVideo").currentTime*10)/10); updateTrimSummary(); });
+$("trEndNow").addEventListener("click", function(){ $("trEnd").value=String(Math.round($("stVideo").currentTime*10)/10); updateTrimSummary(); });
+
+/* tool tabs + crop mode */
+document.querySelectorAll(".tool-tab").forEach(function(b){
+  b.addEventListener("click", function(){
+    stTool=b.getAttribute("data-tool");
+    document.querySelectorAll(".tool-tab").forEach(function(x){ x.setAttribute("aria-pressed", x===b?"true":"false"); });
+    ["compress","trim","crop"].forEach(function(t){ $("stage-"+t).classList.toggle("on", t===stTool); });
+  });
+});
+document.querySelectorAll("[data-cropmode]").forEach(function(b){
+  b.addEventListener("click", function(){
+    cropMode=b.getAttribute("data-cropmode");
+    document.querySelectorAll("[data-cropmode]").forEach(function(x){ x.setAttribute("aria-pressed", x===b?"true":"false"); });
+    $("crFocus").disabled = cropMode!=="fill";
+  });
+});
+
+/* engine loader (one-time) */
+function loadEngine(){
+  if(ffReady) return Promise.resolve();
+  if(ffLoading) return ffLoading;
+  stStatus("Downloading the video engine — one time only (~31 MB)…", 2);
+  ffLoading=new Promise(function(resolve,reject){
+    function start(){
+      try{
+        ff=new window.FFmpegWASM.FFmpeg();
+        ff.on("progress", function(p){
+          if(stBusy && p && typeof p.progress==="number" && isFinite(p.progress) && p.progress>=0)
+            stStatus("Processing… "+Math.min(99,Math.round(p.progress*100))+"%", p.progress*100);
+        });
+        var tu=window.FFmpegUtil.toBlobURL;
+        Promise.all([
+          tu(FF_FFMPEG+"/814.ffmpeg.js","text/javascript"),
+          tu(FF_CORE+"/ffmpeg-core.js","text/javascript"),
+          tu(FF_CORE+"/ffmpeg-core.wasm","application/wasm")
+        ]).then(function(u){
+          return ff.load({classWorkerURL:u[0], coreURL:u[1], wasmURL:u[2]});
+        }).then(function(){ ffReady=true; resolve(); }, reject);
+      }catch(e){ reject(e); }
+    }
+    if(window.FFmpegWASM && window.FFmpegUtil){ start(); return; }
+    var left=2;
+    function ok(){ if(--left===0) start(); }
+    function bad(){ reject(new Error("the engine scripts could not be downloaded")); }
+    var s1=document.createElement("script"); s1.src=FF_FFMPEG+"/ffmpeg.js"; s1.onload=ok; s1.onerror=bad;
+    var s2=document.createElement("script"); s2.src=FF_UTIL; s2.onload=ok; s2.onerror=bad;
+    document.head.appendChild(s1); document.head.appendChild(s2);
+  });
+  ffLoading.then(function(){}, function(){ ffLoading=null; });
+  return ffLoading;
+}
+
+/* job builders — validate first, return an FFmpeg command */
+function buildJob(){
+  var m=stFile.name.match(/\.([a-z0-9]+)$/i);
+  var ext=m?m[1].toLowerCase():"mp4";
+  if(["mp4","mov","webm","mkv","m4v"].indexOf(ext)<0) ext="mp4";
+  var inName="studio_in."+ext, outName="studio_out.mp4";
+  var base=stFile.name.replace(/\.[^.]+$/,"");
+  if(stTool==="compress"){
+    var target=parseFloat($("cpTarget").value), dur=stMeta.dur;
+    if(!dur) throw new Error("Could not read this clip's duration — try another file.");
+    var totalKbps=Math.floor(target*8388608*0.94/1000/dur);
+    var vKbps=totalKbps-128;
+    if(vKbps<120) throw new Error("A "+target+" MB target is too small for a "+dur.toFixed(0)+"s clip — pick a larger target size.");
+    var args=["-i",inName];
+    var cap=parseInt($("cpRes").value,10);
+    if(cap>0) args.push("-vf","scale='min("+cap+",iw)':'min("+cap+",ih)':force_original_aspect_ratio=decrease:force_divisible_by=2");
+    args.push("-c:v","libx264","-preset","veryfast","-b:v",vKbps+"k","-maxrate",Math.round(vKbps*1.5)+"k","-bufsize",(vKbps*2)+"k","-c:a","aac","-b:a","128k","-movflags","+faststart","-y",outName);
+    return {args:args, inName:inName, outName:outName, dl:base+"_compressed.mp4",
+      title:"Compressed — ready to share",
+      format:"MP4 · H.264 + AAC · target under "+target+" MB"};
+  }
+  if(stTool==="trim"){
+    var t=trimVals();
+    if(t.s<0 || t.e>stMeta.dur+0.6) throw new Error("Trim times must stay inside the clip ("+stMeta.dur.toFixed(1)+"s long).");
+    if(!(t.e>t.s)) throw new Error("The end time must be after the start time.");
+    if(t.e-t.s<0.3) throw new Error("That trim is too short — pick at least 0.3 seconds.");
+    return {args:["-ss",t.s.toFixed(3),"-i",inName,"-t",(t.e-t.s).toFixed(3)].concat(
+        ["-c:v","libx264","-preset","veryfast","-crf","18","-c:a","aac","-b:a","160k","-movflags","+faststart","-y",outName]),
+      inName:inName, outName:outName, dl:base+"_trimmed.mp4",
+      title:"Trimmed — "+(t.e-t.s).toFixed(1)+"s clip",
+      format:"MP4 · H.264 + AAC · "+t.s.toFixed(1)+"s → "+t.e.toFixed(1)+"s"};
+  }
+  /* crop → 9:16 */
+  var encC=["-c:v","libx264","-preset","veryfast","-crf","18","-c:a","aac","-b:a","160k","-movflags","+faststart","-y",outName];
+  if(cropMode==="blur"){
+    var fc="[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=24:4[bg];[0:v]scale=1080:1920:force_original_aspect_ratio=decrease[fg];[bg][fg]overlay=(W-w)/2:(H-h)/2,setsar=1[vout]";
+    return {args:["-i",inName,"-filter_complex",fc,"-map","[vout]","-map","0:a?"].concat(encC),
+      inName:inName, outName:outName, dl:base+"_9x16.mp4",
+      title:"Vertical 9:16 — blurred background",
+      format:"MP4 · 1080 × 1920 · full frame kept"};
+  }
+  var focus=$("crFocus").value;
+  var xExpr= focus==="left" ? "0" : focus==="right" ? "iw-ow" : "(iw-ow)/2";
+  var vf="crop='min(iw,ih*9/16)':'min(ih,iw*16/9)':"+xExpr+":(ih-oh)/2,scale=1080:1920,setsar=1";
+  return {args:["-i",inName,"-vf",vf].concat(encC),
+    inName:inName, outName:outName, dl:base+"_9x16.mp4",
+    title:"Vertical 9:16 — fill frame",
+    format:"MP4 · 1080 × 1920 · "+focus+" focus"};
+}
+
+function runStudio(){
+  if(!stFile || !stMeta || stBusy) return;
+  $("stErr").classList.remove("on");
+  $("stResult").classList.remove("on");
+  var job;
+  try{ job=buildJob(); }catch(e){ stErr(e.message); return; }
+  stBusy=true; stSetRuns(false);
+  stStatus("Preparing…", 1);
+  loadEngine()
+  .then(function(){ stStatus("Reading your video into the engine…", 3); return window.FFmpegUtil.fetchFile(stFile); })
+  .then(function(data){ return ff.writeFile(job.inName, data); })
+  .then(function(){ stStatus("Processing…", 5); return ff.exec(job.args, 3600000); })
+  .then(function(code){
+    if(code!==0) throw new Error("the engine rejected this file (exit code "+code+"). It may use a codec the browser engine doesn't support — an MP4 exported from CapCut or HandBrake will work");
+    return ff.readFile(job.outName);
+  })
+  .then(function(data){
+    var blob=new Blob([data], {type:"video/mp4"});
+    if(stOutURL) URL.revokeObjectURL(stOutURL);
+    stOutURL=URL.createObjectURL(blob);
+    $("stResultTitle").textContent=job.title;
+    $("stRBefore").textContent=fmtSize(stFile.size);
+    $("stRAfter").textContent=fmtSize(blob.size);
+    var diff=stFile.size?Math.round((1-blob.size/stFile.size)*100):0;
+    $("stRChange").textContent= diff>0 ? "−"+diff+"% smaller" : diff<0 ? "+"+(-diff)+"% (quality kept)" : "Same size";
+    $("stRFormat").textContent=job.format;
+    $("stResultVideo").src=stOutURL;
+    var dl=$("stDl"); dl.href=stOutURL; dl.setAttribute("download", job.dl);
+    $("stResult").classList.add("on");
+    stStatus("Done ✓", 100);
+    tick("Studio: "+job.title+" — "+fmtSize(stFile.size)+" → "+fmtSize(blob.size)+", processed 100% on-device");
+    ff.deleteFile(job.inName).catch(function(){});
+    ff.deleteFile(job.outName).catch(function(){});
+  })
+  .catch(function(err){
+    stErr("Something went wrong: "+(err && err.message ? err.message : "unknown error")+". If the engine download failed, check your connection and press the button again — it only downloads once.");
+  })
+  .then(function(){
+    stBusy=false; stSetRuns(!!stFile);
+    setTimeout(function(){ if(!stBusy) $("stProgress").classList.remove("on"); }, 900);
+  });
+}
+document.querySelectorAll(".st-run").forEach(function(b){ b.addEventListener("click", runStudio); });
+$("stAgain").addEventListener("click", function(){
+  $("stResult").classList.remove("on");
+  document.getElementById("studio").scrollIntoView({behavior:"smooth"});
+});
 
 /* ---------- TikTok link analyzer (oEmbed) ---------- */
 var ttBtn=$("ttBtn"), ttUrl=$("ttUrl");
