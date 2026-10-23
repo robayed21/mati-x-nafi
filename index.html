@@ -6,6 +6,36 @@
 <meta name="color-scheme" content="dark" />
 <meta name="theme-color" content="#07080d" />
 <meta name="description" content="Optimize, compress, trim and crop TikTok videos entirely in your browser. No uploads — files never leave your device." />
+<link rel="canonical" href="https://robayed.tokenized.name/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Mati X Nafi" />
+<meta property="og:url" content="https://robayed.tokenized.name/" />
+<meta property="og:title" content="Mati X Nafi — TikTok Video Optimizer" />
+<meta property="og:description" content="Optimize, compress, trim, crop and cover TikTok videos entirely in your browser — plus a hashtag & caption generator. No uploads: files never leave your device." />
+<meta property="og:image" content="https://robayed.tokenized.name/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Mati X Nafi — TikTok Video Optimizer" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Mati X Nafi — TikTok Video Optimizer" />
+<meta name="twitter:description" content="Optimize, compress, trim, crop and cover TikTok videos entirely in your browser — plus a hashtag & caption generator. No uploads: files never leave your device." />
+<meta name="twitter:image" content="https://robayed.tokenized.name/og-image.png" />
+<meta name="twitter:image:alt" content="Mati X Nafi — TikTok Video Optimizer" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Mati X Nafi — TikTok Video Optimizer",
+  "url": "https://robayed.tokenized.name/",
+  "image": "https://robayed.tokenized.name/og-image.png",
+  "description": "Browser-based TikTok video optimizer, compressor, trimmer, 9:16 crop, cover maker, audio extractor and hashtag & caption generator. Everything runs on the visitor's device — no uploads.",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any (modern web browser)",
+  "browserRequirements": "Requires JavaScript and WebAssembly",
+  "inLanguage": ["en", "bn"],
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
 <link rel="manifest" href="manifest.webmanifest" />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -324,6 +354,27 @@ body[data-lang="bn"] h1,body[data-lang="bn"] h2,body[data-lang="bn"] h3{letter-s
 @keyframes ldfade{0%,100%{opacity:.72}50%{opacity:1}}
 @keyframes ldslide{0%{transform:translateX(-110%)}100%{transform:translateX(480px)}}
 @media(prefers-reduced-motion:reduce){.ld-mark,.ld-name,.ld-bar i{animation:none}}
+
+/* ---- packs A+B: visits badge, studio tool row, cover maker, hashtags, reviews ---- */
+.visits{display:flex;align-items:center;gap:12px;margin-top:16px;flex-wrap:wrap}
+.visits-lbl{font-family:"JetBrains Mono",monospace;font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+.visits img{height:20px;display:block}
+.tier-row.tools{grid-template-columns:repeat(5,1fr)}
+@media(max-width:1000px){.tier-row.tools{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:640px){.tier-row.tools{grid-template-columns:repeat(2,1fr)}}
+#cvCanvas{width:min(300px,100%);aspect-ratio:9/16;border-radius:14px;border:1px solid var(--line2);background:#000;display:block;margin:6px auto 16px}
+input[type=range].cv-range{width:100%;accent-color:var(--cyan);height:28px;cursor:pointer}
+input[type=color].st-input{height:48px;padding:5px;cursor:pointer}
+.cv-time{font-size:12.5px;color:var(--faint);margin-top:2px}
+.ht-box{margin-top:20px;background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:16px}
+.ht-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px}
+.ht-head span{font-family:"JetBrains Mono",monospace;font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+.ht-tags{font-size:14.5px;line-height:1.75;color:var(--cyan);word-break:break-word;margin:0}
+.ht-cap{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:13px 16px;margin-top:10px}
+.ht-cap p{margin:0;font-size:15px}
+.ht-cap .mini-btn{flex:none}
+.rev-panel h3{font-size:21px;font-weight:900;margin-bottom:8px}
+.rev-panel p{color:var(--muted);margin:0;max-width:640px}
 </style>
 </head>
 <body>
@@ -347,6 +398,7 @@ body[data-lang="bn"] h1,body[data-lang="bn"] h2,body[data-lang="bn"] h3{letter-s
       <a href="#analyzer" data-i18n="nav.analyzer">Analyzer</a>
       <a href="#linkcheck" data-i18n="nav.link">Link Check</a>
       <a href="#times" data-i18n="nav.times">Best Times</a>
+      <a href="#hashtags" data-i18n="nav.hashtags">Hashtags</a>
       <a href="#pricing" data-i18n="nav.pricing">Pricing</a>
       <a href="#faq" data-i18n="nav.faq">FAQ</a>
     </div>
@@ -385,6 +437,7 @@ body[data-lang="bn"] h1,body[data-lang="bn"] h2,body[data-lang="bn"] h3{letter-s
       <div class="stat" role="listitem"><div class="num gr">0</div><div class="lbl" data-i18n="stat.3">Re-encodes — frames copied bit-for-bit</div></div>
       <div class="stat" role="listitem"><div class="num am">100%</div><div class="lbl" data-i18n="stat.4">Processing in your browser — no uploads</div></div>
     </div>
+    <div class="visits"><span class="visits-lbl" data-i18n="stat.visits">Site visits</span><img src="https://hits.sh/robayed.tokenized.name.svg" alt="Site visits counter badge" loading="lazy" /></div>
     <div class="ticker" id="ticker" aria-live="off" data-i18n-html="ticker.init"><b>● ENGINE READY</b> &nbsp;Drop an MP4 into the optimizer below to start.</div>
   </div>
 </header>
@@ -477,12 +530,12 @@ body[data-lang="bn"] h1,body[data-lang="bn"] h2,body[data-lang="bn"] h3{letter-s
   <section class="sec" id="studio">
     <div class="sec-head">
       <span class="tag" data-i18n="st.tag">Studio tools</span>
-      <h2 data-i18n="st.h2">Compressor · Trim · 9:16 Crop</h2>
-      <p data-i18n="st.p">Three hands-on editing tools powered by a real FFmpeg video engine that downloads once (~31 MB) and then runs entirely in your browser. Unlike the optimizer above, these tools do re-encode — that is how genuine compression, cutting and reframing work. Your video still never leaves your device.</p>
+      <h2 data-i18n="st.h2">Compressor · Trim · Crop · Cover · Audio</h2>
+      <p data-i18n="st.p">Five hands-on tools that run entirely in your browser: four powered by a real FFmpeg engine that downloads once (~31 MB), plus a Canvas cover maker. Unlike the optimizer above, the editing tools do re-encode — that is how genuine compression, cutting and reframing work. Your video still never leaves your device.</p>
     </div>
 
     <div class="panel">
-      <div class="tier-row" role="group" aria-label="Choose a studio tool">
+      <div class="tier-row tools" role="group" aria-label="Choose a studio tool">
         <button type="button" class="tier-pick tool-tab" data-tool="compress" aria-pressed="true">
           <span class="t-name"><span data-i18n="tool.compress">Compressor</span> <span class="price">SIZE ↓</span></span>
           <span class="t-lim" data-i18n="tool.compress.lim">Shrink a clip to a target file size</span>
@@ -494,6 +547,14 @@ body[data-lang="bn"] h1,body[data-lang="bn"] h2,body[data-lang="bn"] h3{letter-s
         <button type="button" class="tier-pick tool-tab" data-tool="crop" aria-pressed="false">
           <span class="t-name"><span data-i18n="tool.crop">9:16 Crop</span> <span class="price">1080×1920</span></span>
           <span class="t-lim" data-i18n="tool.crop.lim">Make any clip vertical for TikTok</span>
+        </button>
+        <button type="button" class="tier-pick tool-tab" data-tool="cover" aria-pressed="false">
+          <span class="t-name"><span data-i18n="tool.cover">Cover Maker</span> <span class="price">PNG</span></span>
+          <span class="t-lim" data-i18n="tool.cover.lim">Pick a frame, add a big title, save the cover</span>
+        </button>
+        <button type="button" class="tier-pick tool-tab" data-tool="audio" aria-pressed="false">
+          <span class="t-name"><span data-i18n="tool.audio">Audio Extractor</span> <span class="price">MP3</span></span>
+          <span class="t-lim" data-i18n="tool.audio.lim">Pull the sound out of any clip as MP3</span>
         </button>
       </div>
 
@@ -580,6 +641,34 @@ body[data-lang="bn"] h1,body[data-lang="bn"] h2,body[data-lang="bn"] h3{letter-s
         </div>
         <p class="tool-note" data-i18n="cr.note">Output is always 1080 × 1920 (9:16). “Fill frame” cuts a vertical slice out of your clip; “Blurred background” keeps the whole frame visible over a blurred, zoomed copy of itself — the classic fix for landscape clips.</p>
         <button type="button" class="btn btn-cyan st-run" data-run="crop" disabled data-i18n="cr.btn">Convert to 9:16</button>
+      </div>
+
+      <!-- COVER MAKER -->
+      <div class="studio-stage" id="stage-cover">
+        <div class="field-grid">
+          <div class="field">
+            <label for="cvText" data-i18n="cv.text">Cover title text</label>
+            <input type="text" id="cvText" class="st-input" maxlength="60" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="cvColor" data-i18n="cv.color">Title color</label>
+            <input type="color" id="cvColor" class="st-input" value="#ffffff" />
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:16px">
+          <label for="cvFrame" data-i18n="cv.frame">Frame — drag to pick the moment</label>
+          <input type="range" id="cvFrame" class="cv-range" min="0" max="0" step="0.05" value="0" />
+          <div class="cv-time mono" id="cvTime">0.0s</div>
+        </div>
+        <canvas id="cvCanvas" width="1080" height="1920" aria-label="Cover preview"></canvas>
+        <p class="tool-note" data-i18n="cv.note">A 1080 × 1920 PNG cover, built on a canvas right in your browser — use it as the cover when you post the video to TikTok. The title sits near the top, clear of TikTok's own captions and buttons.</p>
+        <button type="button" class="btn btn-pink" id="cvDl" disabled data-i18n="cv.btn">Download cover PNG (1080 × 1920)</button>
+      </div>
+
+      <!-- AUDIO EXTRACTOR -->
+      <div class="studio-stage" id="stage-audio">
+        <p class="tool-note" data-i18n="au.note">Pull the sound out of your clip as a high-quality MP3 (VBR, ~245 kbps) — reuse a voiceover, a nasheed or a trending sound in your next edit. Runs on the same on-device FFmpeg engine as the other Studio tools.</p>
+        <button type="button" class="btn btn-cyan st-run" data-run="audio" disabled data-i18n="au.btn">Extract MP3</button>
       </div>
 
       <div class="progress" id="stProgress">
@@ -745,6 +834,23 @@ body[data-lang="bn"] h1,body[data-lang="bn"] h2,body[data-lang="bn"] h3{letter-s
     </div>
   </section>
 
+  <!-- HASHTAG & CAPTION GENERATOR -->
+  <section class="sec" id="hashtags">
+    <div class="sec-head">
+      <span class="tag" data-i18n="ht.tag">Grow faster</span>
+      <h2 data-i18n="ht.h2">Hashtag &amp; Caption Generator</h2>
+      <p data-i18n="ht.p">Pick your content category and get a ready-to-post hashtag pack — the English + roman-Bangla mix Bangladeshi TikTok actually runs on — plus three caption templates. One tap copies any of them.</p>
+    </div>
+    <div class="panel">
+      <div class="radio-row" id="htCats" role="group" aria-label="Content category"></div>
+      <div class="ht-box">
+        <div class="ht-head"><span data-i18n="ht.tags">Hashtags</span><button type="button" class="mini-btn" id="htCopyTags" data-i18n="ht.copy">Copy</button></div>
+        <p class="ht-tags" id="htTags"></p>
+      </div>
+      <div id="htCaps"></div>
+    </div>
+  </section>
+
   <!-- HOW -->
   <section class="sec" id="how">
     <div class="sec-head">
@@ -805,6 +911,18 @@ body[data-lang="bn"] h1,body[data-lang="bn"] h2,body[data-lang="bn"] h3{letter-s
         </ul>
         <button type="button" class="btn btn-ghost pick-tier" data-pick="premium" data-i18n="price.usepremium">Use Premium</button>
       </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section class="sec" id="reviews">
+    <div class="sec-head">
+      <span class="tag" data-i18n="rev.tag">Reviews</span>
+      <h2 data-i18n="rev.h2">Creator reviews</h2>
+    </div>
+    <div class="panel rev-panel">
+      <h3 data-i18n="rev.h3">No reviews yet — yours could be the first</h3>
+      <p data-i18n="rev.p">Mati X Nafi is brand new, so this space is still empty — no borrowed stars and no made-up quotes. If the optimizer or a Studio tool helped one of your videos, tell us how it went: honest feedback from the first creators who use the site will be featured here, in their own words.</p>
     </div>
   </section>
 
@@ -909,11 +1027,13 @@ var BN = {
 "r.qual.a":"100% হুবহু — কোনো রি-এনকোড নয়",
 "opt.dl":"অপ্টিমাইজড MP4 ডাউনলোড","opt.again":"আরেকটি অপ্টিমাইজ করুন",
 "opt.result.note":"আসলের বদলে এই ফাইলটাই TikTok-এ পোস্ট করুন। সেরা ফলের জন্য ডেস্কটপ সাইট নয়, অ্যাপ থেকে Wi-Fi-তে আপলোড করুন।",
-"st.tag":"স্টুডিও টুলস","st.h2":"কমপ্রেসর · ট্রিম · 9:16 ক্রপ",
-"st.p":"তিনটি হাতে-কলমে এডিটিং টুল — আসল FFmpeg ভিডিও ইঞ্জিনে চলে, যা একবার ডাউনলোড হয় (~31 MB), তারপর পুরোপুরি আপনার ব্রাউজারেই চলে। উপরের অপ্টিমাইজারের উল্টো, এই টুলগুলো রি-এনকোড করে — আসল কমপ্রেশন, কাটা আর রিফ্রেমিং সেভাবেই হয়। আপনার ভিডিও তবু কখনো ডিভাইস ছাড়ে না।",
+"st.tag":"স্টুডিও টুলস","st.h2":"কমপ্রেসর · ট্রিম · ক্রপ · কভার · অডিও",
+"st.p":"পাঁচটি হাতে-কলমে টুল, পুরোপুরি আপনার ব্রাউজারেই চলে: চারটি আসল FFmpeg ভিডিও ইঞ্জিনে (যা একবার ডাউনলোড হয়, ~31 MB), আর একটি Canvas কভার মেকার। উপরের অপ্টিমাইজারের উল্টো, এডিটিং টুলগুলো রি-এনকোড করে — আসল কমপ্রেশন, কাটা আর রিফ্রেমিং সেভাবেই হয়। আপনার ভিডিও তবু কখনো ডিভাইস ছাড়ে না।",
 "tool.compress":"কমপ্রেসর","tool.compress.lim":"ক্লিপ নির্দিষ্ট ফাইল সাইজে ছোট করুন",
 "tool.trim":"ট্রিম","tool.trim.lim":"শুধু দরকারি অংশটুকু রাখুন",
 "tool.crop":"9:16 ক্রপ","tool.crop.lim":"যেকোনো ক্লিপ TikTok-এর জন্য ভার্টিক্যাল করুন",
+"tool.cover":"কভার মেকার","tool.cover.lim":"ফ্রেম বেছে বড় টাইটেল বসিয়ে কভার সেভ করুন",
+"tool.audio":"অডিও এক্সট্র্যাক্টর","tool.audio.lim":"যেকোনো ক্লিপের শব্দ MP3 হিসেবে বের করুন",
 "st.drop.big":"স্টুডিওর জন্য ভিডিও ছাড়ুন",
 "st.drop.small":"অথবা ট্যাপ করে বেছে নিন — MP4 / MOV / WebM · লোকালি প্রসেস হয়, কখনো আপলোড হয় না",
 "cp.target":"টার্গেট সাইজ","cp.t10":"10 MB-এর নিচে — মেসেজিং অ্যাপের জন্য","cp.t25":"25 MB-এর নিচে","cp.t50":"50 MB-এর নিচে","cp.t100":"100 MB-এর নিচে",
@@ -979,6 +1099,19 @@ var BN = {
 "faq.a7":"ফ্রি টিয়ার মাঝে মাঝে পোস্ট করা ব্যবহারকারীদের জন্য — দিনে ৩টি ভিডিও, প্রতিটি 100 MB পর্যন্ত। বুস্টার আর প্রিমিয়াম যারা নিয়মিত পোস্ট করেন বা লম্বা 4K ক্যাপচার নিয়ে কাজ করেন, তাদের জন্য সাইজ আর দৈনিক সীমা বাড়িয়ে দেয়।",
 "faq.q8":"লিংক থেকে আমার ভিডিওর ভিউ বা শ্যাডো-ব্যান অবস্থা যাচাই করতে পারবেন?",
 "faq.a8":"না — আর কেউই পারে না। TikTok-এর পাবলিক লিংক ডেটা (আমাদের লিংক অ্যানালাইজার যে oEmbed সার্ভিস ব্যবহার করে) শুধু <b>টাইটেল, অথর আর থাম্বনেইল</b> ফেরত দেয়। ভিউ সংখ্যা, লাইক, FPS, কোডেক আর কোনো বিধিনিষেধের অবস্থা বাইরের টুলের কাছে উন্মুক্ত নয়, তাই যেসব টুল লিংক থেকে এগুলো যাচাইয়ের দাবি করে, তারা অনুমান করছে বা সংখ্যা বানাচ্ছে। ভিডিও সম্পর্কে আসল টেকনিক্যাল তথ্য চাইলে <b>ফাইলটি</b> অ্যানালাইজ করুন — সেই ডেটা সত্যিই সেখানে আছে।",
+"nav.hashtags":"হ্যাশট্যাগ",
+"stat.visits":"সাইট ভিজিট",
+"cv.text":"কভারের টাইটেল লেখা","cv.color":"টাইটেলের রঙ","cv.frame":"ফ্রেম — স্লাইডার টেনে মুহূর্ত বাছুন",
+"cv.note":"1080 × 1920 PNG কভার, আপনার ব্রাউজারেই Canvas দিয়ে তৈরি — TikTok-এ ভিডিও পোস্টের সময় কভার হিসেবে ব্যবহার করুন। টাইটেল উপরের দিকে বসে, TikTok-এর নিজের ক্যাপশন আর বাটন থেকে দূরে।",
+"cv.btn":"কভার PNG ডাউনলোড (1080 × 1920)",
+"au.note":"আপনার ক্লিপের শব্দ উচ্চ-মানের MP3 (VBR, ~245 kbps) হিসেবে বের করুন — ভয়েসওভার, নাশিদ বা ট্রেন্ডিং সাউন্ড পরের এডিটে আবার ব্যবহারের জন্য। স্টুডিওর অন্য টুলের মতোই একই অন-ডিভাইস FFmpeg ইঞ্জিনে চলে।",
+"au.btn":"MP3 বের করুন",
+"ht.tag":"দ্রুত বাড়ুন","ht.h2":"হ্যাশট্যাগ ও ক্যাপশন জেনারেটর",
+"ht.p":"আপনার কনটেন্টের ধরন বাছুন — পোস্টের জন্য প্রস্তুত হ্যাশট্যাগ প্যাক পান (বাংলাদেশি TikTok-এ সত্যিকারে চলতি ইংরেজি + রোমান-বাংলা মিশ্রণ), সাথে তিনটি ক্যাপশন টেমপ্লেট। যেকোনোটা এক ট্যাপেই কপি হয়।",
+"ht.tags":"হ্যাশট্যাগ","ht.copy":"কপি",
+"rev.tag":"রিভিউ","rev.h2":"ক্রিয়েটরদের মতামত",
+"rev.h3":"এখনো কোনো রিভিউ নেই — আপনারটাই হতে পারে প্রথম",
+"rev.p":"Mati X Nafi একদম নতুন, তাই এই জায়গাটা এখনো খালি — ধার করা তারা নেই, বানানো মন্তব্যও নেই। অপ্টিমাইজার বা কোনো স্টুডিও টুল আপনার কোনো ভিডিওতে কাজে লেগে থাকলে জানান কেমন গেল: সাইটটির প্রথম ক্রিয়েটরদের সৎ মতামতই এখানে হাজির হবে, তাদের নিজের কথায়।",
 "foot.left":"Mati X Nafi — একটি স্বাধীন টুল। TikTok বা ByteDance-এর সাথে সম্পর্কিত নয়।",
 "foot.right":"100% ক্লায়েন্ট-সাইড · কোনো আপলোড নেই · ফাইল কখনো আপনার ডিভাইস ছাড়ে না"
 };
@@ -1005,6 +1138,8 @@ function applyLang(l){
   $("langBn").setAttribute("aria-pressed", l==="bn" ? "true" : "false");
   if(typeof updateUsage==="function") updateUsage();
   if(typeof renderBT==="function") renderBT();
+  if(typeof renderHT==="function") renderHT();
+  if(typeof drawCover==="function") drawCover();
   if(typeof stMeta!=="undefined" && stMeta) updateTrimSummary();
   if(typeof curMeta!=="undefined" && curMeta && curMeta.detail) runAnalyzer(curMeta);
   if(!$("ttBtn").disabled) $("ttBtn").textContent = T("Check link","লিংক যাচাই করুন");
@@ -1540,6 +1675,7 @@ function stStatus(txt,pct){
 }
 function stSetRuns(on){
   document.querySelectorAll(".st-run").forEach(function(b){ b.disabled=!on; });
+  var cvd=$("cvDl"); if(cvd) cvd.disabled=!on;
 }
 function loadStudioFile(f){
   if(stBusy) return;
@@ -1565,6 +1701,9 @@ function loadStudioFile(f){
     trS.value="0"; trE.value=stMeta.dur?String(Math.round(stMeta.dur*10)/10):"0";
     trS.max=stMeta.dur||0; trE.max=stMeta.dur||0;
     updateTrimSummary();
+    var cvF=$("cvFrame");
+    if(cvF){ cvF.max=stMeta.dur||0; cvF.value="0"; $("cvTime").textContent="0.0s"; }
+    if(stTool==="cover") setTimeout(drawCover, 80);
     stSetRuns(true);
     if(f.size>400*1048576) stErr(T("Heads-up: this file is "+fmtSize(f.size)+". Browser-based encoding holds everything in memory, so very large files can be slow — or run out of memory on low-end phones. It will still try.",
       "খেয়াল করুন: এই ফাইলটি "+fmtSize(f.size)+"। ব্রাউজার-ভিত্তিক এনকোডিং সবকিছু মেমোরিতে রাখে, তাই খুব বড় ফাইল ধীর হতে পারে — বা কম-ক্ষমতার ফোনে মেমোরি শেষ হয়ে যেতে পারে। তবু চেষ্টা করবে।"));
@@ -1599,7 +1738,11 @@ document.querySelectorAll(".tool-tab").forEach(function(b){
   b.addEventListener("click", function(){
     stTool=b.getAttribute("data-tool");
     document.querySelectorAll(".tool-tab").forEach(function(x){ x.setAttribute("aria-pressed", x===b?"true":"false"); });
-    ["compress","trim","crop"].forEach(function(t){ $("stage-"+t).classList.toggle("on", t===stTool); });
+    ["compress","trim","crop","cover","audio"].forEach(function(t){ $("stage-"+t).classList.toggle("on", t===stTool); });
+    if(stTool==="cover"){
+      var cf=$("cvFrame"); if(cf && stMeta) cf.max=stMeta.dur||0;
+      drawCover();
+    }
   });
 });
 document.querySelectorAll("[data-cropmode]").forEach(function(b){
@@ -1677,6 +1820,12 @@ function buildJob(){
       title:T("Trimmed — "+(t.e-t.s).toFixed(1)+"s clip","ট্রিম করা — "+(t.e-t.s).toFixed(1)+"s ক্লিপ"),
       format:"MP4 · H.264 + AAC · "+t.s.toFixed(1)+"s → "+t.e.toFixed(1)+"s"};
   }
+  if(stTool==="audio"){
+    return {args:["-i",inName,"-vn","-c:a","libmp3lame","-q:a","2","-y","studio_out.mp3"],
+      inName:inName, outName:"studio_out.mp3", dl:base+"_audio.mp3", mime:"audio/mpeg",
+      title:T("Audio extracted — MP3 ready","অডিও বের করা হয়েছে — MP3 প্রস্তুত"),
+      format:T("MP3 · audio only · VBR quality 2 (~245 kbps)","MP3 · শুধু অডিও · VBR কোয়ালিটি 2 (~245 kbps)")};
+  }
   /* crop → 9:16 */
   var encC=["-c:v","libx264","-preset","veryfast","-crf","18","-c:a","aac","-b:a","160k","-movflags","+faststart","-y",outName];
   if(cropMode==="blur"){
@@ -1713,7 +1862,7 @@ function runStudio(){
     return ff.readFile(job.outName);
   })
   .then(function(data){
-    var blob=new Blob([data], {type:"video/mp4"});
+    var blob=new Blob([data], {type: job.mime||"video/mp4"});
     if(stOutURL) URL.revokeObjectURL(stOutURL);
     stOutURL=URL.createObjectURL(blob);
     $("stResultTitle").textContent=job.title;
@@ -1722,7 +1871,9 @@ function runStudio(){
     var diff=stFile.size?Math.round((1-blob.size/stFile.size)*100):0;
     $("stRChange").textContent= diff>0 ? T("−"+diff+"% smaller","−"+diff+"% ছোট") : diff<0 ? T("+"+(-diff)+"% (quality kept)","+"+(-diff)+"% (কোয়ালিটি রাখা)") : T("Same size","একই সাইজ");
     $("stRFormat").textContent=job.format;
-    $("stResultVideo").src=stOutURL;
+    var rv=$("stResultVideo");
+    rv.style.display = job.mime==="audio/mpeg" ? "none" : "";
+    rv.src=stOutURL;
     var dl=$("stDl"); dl.href=stOutURL; dl.setAttribute("download", job.dl);
     $("stResult").classList.add("on");
     stStatus(T("Done ✓","হয়ে গেছে ✓"), 100);
@@ -1743,6 +1894,177 @@ $("stAgain").addEventListener("click", function(){
   $("stResult").classList.remove("on");
   document.getElementById("studio").scrollIntoView({behavior:"smooth"});
 });
+
+/* ---------- clipboard helper (works on plain HTTP too) ---------- */
+function copyText(txt){
+  function done(){ showToast(T("Copied to clipboard ✓","ক্লিপবোর্ডে কপি হয়েছে ✓")); }
+  function fallback(){
+    var ta=document.createElement("textarea");
+    ta.value=txt; ta.setAttribute("readonly","");
+    ta.style.position="fixed"; ta.style.opacity="0"; ta.style.top="0";
+    document.body.appendChild(ta); ta.select();
+    var ok=false;
+    try{ ok=document.execCommand("copy"); }catch(e){ ok=false; }
+    document.body.removeChild(ta);
+    if(ok) done();
+    else showToast(T("Copy failed — long-press the text to copy it by hand","কপি হয়নি — লেখাটি চেপে ধরে নিজে কপি করুন"));
+  }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(done, fallback);
+  } else fallback();
+}
+
+/* ---------- hashtag & caption generator ----------
+   Ready-made packs in the English + roman-Bangla mix Bangladeshi TikTok
+   actually uses. Pure client-side data — nothing is fetched. */
+var HT_CATS=[
+  {id:"gaming",  en:"Gaming",  bn:"গেমিং"},
+  {id:"comedy",  en:"Comedy",  bn:"কমেডি"},
+  {id:"fashion", en:"Fashion", bn:"ফ্যাশন"},
+  {id:"islamic", en:"Islamic", bn:"ইসলামিক"},
+  {id:"food",    en:"Food",    bn:"খাবার"},
+  {id:"travel",  en:"Travel",  bn:"ভ্রমণ"},
+  {id:"dance",   en:"Dance",   bn:"নাচ"},
+  {id:"general", en:"General", bn:"সাধারণ"}
+];
+var HT_DATA={
+gaming:{tags:"#gaming #gamer #bdgaming #bangladeshigamer #freefire #freefirebangladesh #pubgmobile #pubgbd #esportsbd #gamingcommunity #gameplay #headshot #proplayer #tiktokgaming #bangladesh #fyp #foryou #viral",
+  caps:["Last zone e 1v4 clutch kore fellam! 🔥 Next part lagle comment koro 👇",
+        "Ei headshot ta miss gele aj ami sesh chilam 😤 Tomader best gaming moment konta?",
+        "Bangladeshi gamer der jonno ekta boro shoutout! 🇧🇩 Squad ready? Next match e dekha hocche."]},
+comedy:{tags:"#comedy #funny #funnyvideo #banglafunny #bdcomedy #hasirvideo #bangladeshi #dhaka #relatable #funnybangladesh #comedyvideo #tiktokbangladesh #bd #bangladesh #fyp #foryoupage #viral #trending",
+  caps:["Shesh porjonto hashi thamatei parlam na 😂 Tag koro shei bondhu ke, jake eta mone porbe!",
+        "POV: Bangladesh e thakle eta protidin e hoy 🤣 Relatable hole ekta share diye jao!",
+        "Bondhu jokhon bole 'matro 5 minute lagbe' 😭 Ke ke relate korte paro? Comment e bolo."]},
+fashion:{tags:"#fashion #style #ootd #bangladeshifashion #bdfashion #panjabi #dhakafashion #fashionblogger #streetstyle #eidcollection #desilook #tiktokfashion #fashiontiktok #bangladesh #fyp #foryou #viral",
+  caps:["Ajker look ta kemon holo? 1 theke 10 e rate koro 👇✨",
+        "Budget er moddhe premium look! Full outfit details comment e diye dilam 💬",
+        "Panjabi style e ektu notun twist — Eid ar biyer jonno perfect look 🔥"]},
+islamic:{tags:"#islamic #islam #muslim #islamicreminder #quran #hadith #jummahmubarak #alhamdulillah #islamicvideo #waz #deen #allah #bangladesh #fyp #foryou #viral",
+  caps:["Alhamdulillah 🤲 Allah amader sobaike hedayet dan korun. Ameen.",
+        "Jummah Mubarak sobaike 🤍 Share kore onnokeo mone koriye din.",
+        "Chhoto ekta mone korano — jotoi busy thako, namaz kokhono miss koro na 🤲"]},
+food:{tags:"#food #foodie #bangladeshifood #dhakafood #biryani #streetfood #foodlover #foodreview #bdfood #khana #foodtiktok #yummy #foodblogger #recipe #bangladesh #fyp #foryou #viral",
+  caps:["Dhaka r best biryani spot ta khuje peye gelam! 🍛 Location comment e diye dilam 👇",
+        "Matro 100 takay eto moja r khabar? 😋 Full video dekhlei bujhba!",
+        "Recipe ta bashay try kore dekho — restaurant er taste ekdom ghorei! 👨‍🍳"]},
+travel:{tags:"#travel #bangladesh #travelbangladesh #coxsbazar #sajek #bandarban #travelblogger #nature #beautifulbangladesh #travelgram #wanderlust #trip #tourism #dhaka #fyp #foryou #viral",
+  caps:["Bangladesh eto shundor jaygay bhora, amra onekei jantam e na! 😍 Next trip kothay jabo bolo?",
+        "Cox's Bazar er sunset ta just wow 🌅 Save kore rakho next trip er jonno!",
+        "Khub kom khoroche ghure aslam — full plan ta comment e diye dilam 👇"]},
+dance:{tags:"#dance #dancer #dancetiktok #bangladeshidance #trendingdance #dancechallenge #tiktokdance #choreography #dancelover #bd #bangladesh #fyp #foryou #viral #trending",
+  caps:["Trending song e amader version! 💃 Duet kore dekhao tomar style 🔥",
+        "Ei step ta shikhte purapuri 2 din laglo 😅 Tomra try kore dekho!",
+        "Bangladeshi dance squad assemble! 🇧🇩 Next kon song e dance korbo?"]},
+general:{tags:"#bangladesh #tiktokbangladesh #bd #dhaka #bangla #bdtiktok #bangladeshi #bangladeshitiktok #viralvideo #trending #tiktok #bdcommunity #fyp #foryou #foryoupage #viral",
+  caps:["Eta dekhle din tai bhalo hoye jabe! 😊 Share kore priyojon ke pathiye dao.",
+        "Shesh porjonto dekho — twist ta miss koro na! 👀 Daily notun video pete follow kore rakho.",
+        "Tomader ekta comment ei amar sobcheye boro support ❤️ Kemon laglo janio."]}
+};
+var htCat="general";
+function renderHT(){
+  var wrap=$("htCats"); if(!wrap) return;
+  wrap.innerHTML="";
+  HT_CATS.forEach(function(c){
+    var b=document.createElement("button");
+    b.type="button"; b.className="chip-pick";
+    b.textContent = lang==="bn" ? c.bn : c.en;
+    b.setAttribute("aria-pressed", c.id===htCat ? "true" : "false");
+    b.addEventListener("click", function(){ htCat=c.id; renderHT(); });
+    wrap.appendChild(b);
+  });
+  var d=HT_DATA[htCat]; if(!d) return;
+  $("htTags").textContent=d.tags;
+  var caps=$("htCaps"); caps.innerHTML="";
+  d.caps.forEach(function(cap){
+    var row=document.createElement("div"); row.className="ht-cap";
+    var p=document.createElement("p"); p.textContent=cap;
+    var btn=document.createElement("button");
+    btn.type="button"; btn.className="mini-btn"; btn.textContent=T("Copy","কপি");
+    btn.addEventListener("click", function(){ copyText(cap); });
+    row.appendChild(p); row.appendChild(btn);
+    caps.appendChild(row);
+  });
+}
+$("htCopyTags").addEventListener("click", function(){ copyText(HT_DATA[htCat].tags); });
+renderHT();
+
+/* ---------- cover maker (Canvas, 1080 × 1920) ----------
+   Draws the Studio preview video's current frame cover-fit into a
+   1080 × 1920 canvas, stamps the title in the chosen color, exports PNG. */
+var cvCanvas=$("cvCanvas"), cvCtx=cvCanvas ? cvCanvas.getContext("2d") : null;
+function drawCover(){
+  if(!cvCtx) return;
+  var W=1080, H=1920;
+  cvCtx.fillStyle="#05060a"; cvCtx.fillRect(0,0,W,H);
+  var v=$("stVideo"), drew=false;
+  if(stFile && v && v.videoWidth && v.videoHeight){
+    var sc=Math.max(W/v.videoWidth, H/v.videoHeight);
+    var dw=v.videoWidth*sc, dh=v.videoHeight*sc;
+    try{ cvCtx.drawImage(v,(W-dw)/2,(H-dh)/2,dw,dh); drew=true; }catch(e){ drew=false; }
+  }
+  if(!drew){
+    cvCtx.fillStyle="#9aa0b5";
+    cvCtx.font="700 46px Archivo, 'Noto Sans Bengali', sans-serif";
+    cvCtx.textAlign="center"; cvCtx.textBaseline="middle";
+    cvCtx.fillText(T("Pick a video above first","আগে উপরে একটি ভিডিও বাছুন"), W/2, H/2);
+  }
+  var txt=($("cvText").value||"").trim();
+  if(!txt) return;
+  var color=$("cvColor").value||"#ffffff";
+  function wrapLines(size){
+    cvCtx.font="900 "+size+"px Archivo, 'Noto Sans Bengali', sans-serif";
+    var words=txt.split(/\s+/), lines=[], line="";
+    words.forEach(function(w){
+      var test= line ? line+" "+w : w;
+      if(line && cvCtx.measureText(test).width>920){ lines.push(line); line=w; }
+      else line=test;
+    });
+    if(line) lines.push(line);
+    return lines;
+  }
+  var size=150, lines=wrapLines(size);
+  while(lines.length>3 && size>56){ size-=14; lines=wrapLines(size); }
+  var totalH=lines.length*size*1.14;
+  var grad=cvCtx.createLinearGradient(0,0,0,240+totalH+140);
+  grad.addColorStop(0,"rgba(0,0,0,.55)"); grad.addColorStop(1,"rgba(0,0,0,0)");
+  cvCtx.fillStyle=grad; cvCtx.fillRect(0,0,W,240+totalH+140);
+  cvCtx.textAlign="center"; cvCtx.textBaseline="top"; cvCtx.lineJoin="round";
+  var y=190;
+  lines.forEach(function(ln){
+    cvCtx.font="900 "+size+"px Archivo, 'Noto Sans Bengali', sans-serif";
+    cvCtx.strokeStyle="rgba(0,0,0,.88)"; cvCtx.lineWidth=Math.max(8,Math.round(size/9));
+    cvCtx.strokeText(ln, W/2, y);
+    cvCtx.fillStyle=color; cvCtx.fillText(ln, W/2, y);
+    y+=size*1.14;
+  });
+}
+if($("cvFrame")){
+  $("cvFrame").addEventListener("input", function(){
+    var t=parseFloat(this.value)||0;
+    $("cvTime").textContent=t.toFixed(1)+"s";
+    if(stFile){ try{ $("stVideo").currentTime=t; }catch(e){} }
+  });
+  $("stVideo").addEventListener("seeked", function(){ if(stTool==="cover") drawCover(); });
+  $("cvText").addEventListener("input", drawCover);
+  $("cvColor").addEventListener("input", drawCover);
+  $("cvDl").addEventListener("click", function(){
+    drawCover();
+    if(!cvCanvas.toBlob) return;
+    cvCanvas.toBlob(function(b){
+      if(!b) return;
+      var u=URL.createObjectURL(b);
+      var a=document.createElement("a");
+      var base= stFile ? stFile.name.replace(/\.[^.]+$/,"") : "mati-x-nafi";
+      a.href=u; a.download=base+"_cover.png";
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function(){ URL.revokeObjectURL(u); }, 4000);
+      showToast(T("Cover downloaded — 1080 × 1920 PNG ✓","কভার ডাউনলোড হয়েছে — 1080 × 1920 PNG ✓"));
+    }, "image/png");
+  });
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ if(stTool==="cover") drawCover(); });
+  drawCover();
+}
 
 /* ---------- TikTok link analyzer (oEmbed) ---------- */
 var ttBtn=$("ttBtn"), ttUrl=$("ttUrl");
