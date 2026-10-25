@@ -373,6 +373,35 @@ input[type=color].st-input{height:48px;padding:5px;cursor:pointer}
 .ht-cap .mini-btn{flex:none}
 .rev-panel h3{font-size:21px;font-weight:900;margin-bottom:8px}
 .rev-panel p{color:var(--muted);margin:0;max-width:640px}
+
+/* ===== v2: Antigravity-inspired animation layer (additive only) ===== */
+.hero>canvas#v2-stars{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.hero>.wrap{position:relative;z-index:1}
+.hero h1{font-size:clamp(44px,8vw,88px);line-height:1.02;letter-spacing:-1.5px}
+.hero .sub.typing::after{content:"\258D";color:var(--pink);margin-left:2px;animation:v2blink .8s steps(1) infinite}
+@keyframes v2blink{50%{opacity:0}}
+.v2-marquee{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#fff;padding:10px 0;position:relative;z-index:1}
+.v2-marquee-track{display:flex;gap:10px;width:max-content;animation:v2mq 30s linear infinite}
+.v2-marquee:hover .v2-marquee-track{animation-play-state:paused}
+.v2-chip{white-space:nowrap;font-weight:700;font-size:13px;border:1px solid var(--line);border-radius:999px;padding:6px 14px;background:#fff}
+.v2-chip.c1{color:var(--cyan-t)}.v2-chip.c2{color:var(--pink)}.v2-chip.c3{color:#111827}
+@keyframes v2mq{to{transform:translateX(-50%)}}
+@keyframes v2Rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+.v2-in{animation:v2Rise .7s cubic-bezier(.22,.7,.25,1) both}
+.prices>.price-card.rv-play:nth-child(odd),.how>.how-card.rv-play:nth-child(odd){animation:v2SlideL .7s cubic-bezier(.22,.7,.25,1) both}
+.prices>.price-card.rv-play:nth-child(even),.how>.how-card.rv-play:nth-child(even){animation:v2SlideR .7s cubic-bezier(.22,.7,.25,1) both}
+@keyframes v2SlideL{from{opacity:0;transform:translateX(-36px)}to{opacity:1;transform:translateX(0)}}
+@keyframes v2SlideR{from{opacity:0;transform:translateX(36px)}to{opacity:1;transform:translateX(0)}}
+footer.v2-dark{background:#0B0B12;color:#D1D5DB;border-top:1px solid #1F2937;position:relative;overflow:hidden}
+footer.v2-dark canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+footer.v2-dark .wrap{position:relative;z-index:1}
+footer.v2-dark .wrap span{color:#D1D5DB}
+footer.v2-dark .wrap .mono{color:#9CA3AF}
+@media(prefers-reduced-motion:reduce){
+.v2-marquee-track{animation:none}
+.v2-in,.prices>.price-card.rv-play,.how>.how-card.rv-play{animation:none}
+.hero .sub.typing::after{animation:none;content:""}
+}
 </style>
 </head>
 <body>
@@ -388,7 +417,7 @@ input[type=color].st-input{height:48px;padding:5px;cursor:pointer}
 
 <nav>
   <div class="wrap nav-in">
-    <a class="logo" href="#top" aria-label="Mati X Nafi — home"><span class="logo-mark" aria-hidden="true">✕</span>Mati&nbsp;<span class="x">X</span>&nbsp;Nafi</a>
+    <a class="logo" href="#top" aria-label="Mati X Nafi — home"><svg width="132" height="36" viewBox="0 0 132 36" role="img" aria-label="Mati" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="mxn-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00C2CB"/><stop offset="1" stop-color="#FE2C55"/></linearGradient></defs><rect x="1" y="1" width="34" height="34" rx="9" fill="url(#mxn-g)"/><path d="M14 11 L25 18 L14 25 Z" fill="#ffffff"/><text x="43" y="26" font-family="Archivo, system-ui, sans-serif" font-size="24" font-weight="900" letter-spacing="-0.5" fill="#111827">Mati</text></svg></a>
     <div class="nav-links">
       <a href="#optimizer" data-i18n="nav.optimizer">Optimizer</a>
       <a href="#studio" data-i18n="nav.studio">Studio</a>
@@ -410,6 +439,7 @@ input[type=color].st-input{height:48px;padding:5px;cursor:pointer}
 </nav>
 
 <header class="hero" id="top">
+  <canvas id="v2-stars" aria-hidden="true"></canvas>
   <div class="wrap">
     <div class="hero-grid">
       <div>
@@ -439,6 +469,7 @@ input[type=color].st-input{height:48px;padding:5px;cursor:pointer}
     <div class="ticker" id="ticker" aria-live="off" data-i18n-html="ticker.init"><b>● ENGINE READY</b> &nbsp;Drop an MP4 into the optimizer below to start.</div>
   </div>
 </header>
+<div class="v2-marquee" aria-hidden="true"><div class="v2-marquee-track"><span class="v2-chip c1">Optimizer</span><span class="v2-chip c2">Trim</span><span class="v2-chip c3">9:16 Crop</span><span class="v2-chip c1">Cover Maker</span><span class="v2-chip c2">Audio Extractor</span><span class="v2-chip c3">Analyzer</span><span class="v2-chip c1">Link Check</span><span class="v2-chip c2">Best Times</span><span class="v2-chip c3">Hashtags</span><span class="v2-chip c1">Faststart</span><span class="v2-chip c2">No re-encode</span><span class="v2-chip c3">4K 120 FPS</span><span class="v2-chip c1">Optimizer</span><span class="v2-chip c2">Trim</span><span class="v2-chip c3">9:16 Crop</span><span class="v2-chip c1">Cover Maker</span><span class="v2-chip c2">Audio Extractor</span><span class="v2-chip c3">Analyzer</span><span class="v2-chip c1">Link Check</span><span class="v2-chip c2">Best Times</span><span class="v2-chip c3">Hashtags</span><span class="v2-chip c1">Faststart</span><span class="v2-chip c2">No re-encode</span><span class="v2-chip c3">4K 120 FPS</span></div></div>
 
 <main class="wrap">
 
@@ -966,7 +997,8 @@ input[type=color].st-input{height:48px;padding:5px;cursor:pointer}
 
 </main>
 
-<footer>
+<footer class="v2-dark">
+  <canvas id="v2-foot" aria-hidden="true"></canvas>
   <div class="wrap">
     <span data-i18n="foot.left">Mati X Nafi — an independent tool. Not affiliated with TikTok or ByteDance.</span>
     <span class="mono" data-i18n="foot.right">100% client-side · No uploads · Files never leave your device</span>
@@ -2294,6 +2326,97 @@ installEls().forEach(function(b){
     }
   });
 });
+})();
+</script>
+
+<script>
+(function(){
+"use strict";
+var reduced = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+var finePointer = !!(window.matchMedia && window.matchMedia("(pointer: fine)").matches);
+function particleField(cv, count, colors, parallax){
+  if(!cv) return;
+  var ctx = cv.getContext("2d"), dots = [], raf = 0, running = false, mx = 0, my = 0;
+  var host = cv.parentElement;
+  function size(){
+    var w = host.clientWidth, h = host.clientHeight, dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    cv.width = w * dpr; cv.height = h * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var n = window.innerWidth < 700 ? Math.round(count / 2) : count;
+    dots = [];
+    for(var i = 0; i < n; i++){
+      dots.push({x: Math.random() * w, y: Math.random() * h, r: Math.random() * 2 + 0.8,
+        c: colors[i % colors.length], vx: (Math.random() - 0.5) * 0.16, vy: (Math.random() - 0.5) * 0.16,
+        a: 0.35 + Math.random() * 0.5, tw: Math.random() * Math.PI * 2, d: Math.random() * 0.7 + 0.3});
+    }
+    draw(0, 0);
+  }
+  function draw(px, py){
+    var w = host.clientWidth, h = host.clientHeight;
+    ctx.clearRect(0, 0, w, h);
+    for(var i = 0; i < dots.length; i++){
+      var d = dots[i];
+      ctx.beginPath();
+      ctx.arc(d.x + px * d.d * 10, d.y + py * d.d * 10, d.r, 0, Math.PI * 2);
+      ctx.fillStyle = d.c; ctx.globalAlpha = d.a; ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+  function frame(){
+    var w = host.clientWidth, h = host.clientHeight;
+    for(var i = 0; i < dots.length; i++){
+      var d = dots[i];
+      d.x += d.vx; d.y += d.vy; d.tw += 0.02;
+      d.a = 0.35 + 0.35 * (0.5 + 0.5 * Math.sin(d.tw));
+      if(d.x < -5) d.x = w + 5; if(d.x > w + 5) d.x = -5;
+      if(d.y < -5) d.y = h + 5; if(d.y > h + 5) d.y = -5;
+    }
+    draw(mx, my);
+    raf = requestAnimationFrame(frame);
+  }
+  function start(){ if(!running && !reduced && !document.hidden){ running = true; raf = requestAnimationFrame(frame); } }
+  function stop(){ if(running){ cancelAnimationFrame(raf); running = false; } }
+  if("IntersectionObserver" in window){
+    new IntersectionObserver(function(es){ es.forEach(function(en){ en.isIntersecting ? start() : stop(); }); }, {threshold: 0}).observe(host);
+  }
+  document.addEventListener("visibilitychange", function(){ document.hidden ? stop() : start(); });
+  window.addEventListener("resize", size);
+  if(parallax && finePointer){
+    window.addEventListener("mousemove", function(e){
+      mx = e.clientX / window.innerWidth - 0.5; my = e.clientY / window.innerHeight - 0.5;
+    });
+    window.addEventListener("scroll", function(){
+      var r = host.getBoundingClientRect();
+      if(r.bottom > 0 && r.top < window.innerHeight){ cv.style.transform = "translateY(" + (window.scrollY * 0.04) + "px)"; }
+    }, {passive: true});
+  }
+  size(); start();
+}
+var DOT_COLORS = ["#00C2CB","#00C2CB","#FE2C55","#FE2C55","#FFD166","#4EA8FF"];
+particleField(document.getElementById("v2-stars"), 130, DOT_COLORS, true);
+particleField(document.getElementById("v2-foot"), 40, DOT_COLORS, false);
+/* Typewriter reveal for the hero subtext (text unchanged; abort cleanly if i18n swaps it mid-type) */
+var sub = document.querySelector("header.hero .sub");
+function typeSub(){
+  if(!sub || reduced) return;
+  var full = sub.textContent, i = 0;
+  sub.classList.add("typing");
+  sub.textContent = "";
+  var timer = setInterval(function(){
+    if(sub.textContent !== full.slice(0, i)){ clearInterval(timer); sub.classList.remove("typing"); return; }
+    i++;
+    sub.textContent = full.slice(0, i);
+    if(i >= full.length){ clearInterval(timer); sub.classList.remove("typing"); }
+  }, 14);
+}
+if(document.readyState === "complete"){ typeSub(); }
+else{ window.addEventListener("load", typeSub); }
+/* Section reveals: same one-shot, never-pre-hidden pattern as the original rv system, distinct class */
+if("IntersectionObserver" in window && !reduced){
+  var v2io = new IntersectionObserver(function(es){
+    es.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add("v2-in"); v2io.unobserve(en.target); } });
+  }, {threshold: .08, rootMargin: "0px 0px -4% 0px"});
+  document.querySelectorAll("main section.sec").forEach(function(el){ v2io.observe(el); });
+}
 })();
 </script>
 </body>
