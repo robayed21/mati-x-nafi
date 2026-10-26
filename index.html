@@ -380,18 +380,18 @@ input[type=color].st-input{height:48px;padding:5px;cursor:pointer}
 .hero h1{font-size:clamp(44px,8vw,88px);line-height:1.02;letter-spacing:-1.5px}
 .hero .sub.typing::after{content:"\258D";color:var(--pink);margin-left:2px;animation:v2blink .8s steps(1) infinite}
 @keyframes v2blink{50%{opacity:0}}
-.v2-marquee{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#fff;padding:10px 0;position:relative;z-index:1}
-.v2-marquee-track{display:flex;gap:10px;width:max-content;animation:v2mq 30s linear infinite}
+.v2-marquee{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#fff;padding:14px 0;position:relative;z-index:1}
+.v2-marquee-track{display:flex;gap:12px;width:max-content;animation:v2mq 12s linear infinite}
 .v2-marquee:hover .v2-marquee-track{animation-play-state:paused}
-.v2-chip{white-space:nowrap;font-weight:700;font-size:13px;border:1px solid var(--line);border-radius:999px;padding:6px 14px;background:#fff}
+.v2-chip{white-space:nowrap;font-weight:700;font-size:16px;border:1px solid var(--line);border-radius:999px;padding:9px 20px;background:#fff}
 .v2-chip.c1{color:var(--cyan-t)}.v2-chip.c2{color:var(--pink)}.v2-chip.c3{color:#111827}
 @keyframes v2mq{to{transform:translateX(-50%)}}
-@keyframes v2Rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
-.v2-in{animation:v2Rise .7s cubic-bezier(.22,.7,.25,1) both}
-.prices>.price-card.rv-play:nth-child(odd),.how>.how-card.rv-play:nth-child(odd){animation:v2SlideL .7s cubic-bezier(.22,.7,.25,1) both}
-.prices>.price-card.rv-play:nth-child(even),.how>.how-card.rv-play:nth-child(even){animation:v2SlideR .7s cubic-bezier(.22,.7,.25,1) both}
-@keyframes v2SlideL{from{opacity:0;transform:translateX(-36px)}to{opacity:1;transform:translateX(0)}}
-@keyframes v2SlideR{from{opacity:0;transform:translateX(36px)}to{opacity:1;transform:translateX(0)}}
+@keyframes v2Rise{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+.v2-in{animation:v2Rise 1s cubic-bezier(.22,.7,.25,1) both}
+.prices>.price-card.rv-play:nth-child(odd),.how>.how-card.rv-play:nth-child(odd){animation:v2SlideL 1s cubic-bezier(.22,.7,.25,1) both}
+.prices>.price-card.rv-play:nth-child(even),.how>.how-card.rv-play:nth-child(even){animation:v2SlideR 1s cubic-bezier(.22,.7,.25,1) both}
+@keyframes v2SlideL{from{opacity:0;transform:translateX(-44px)}to{opacity:1;transform:translateX(0)}}
+@keyframes v2SlideR{from{opacity:0;transform:translateX(44px)}to{opacity:1;transform:translateX(0)}}
 footer.v2-dark{background:#0B0B12;color:#D1D5DB;border-top:1px solid #1F2937;position:relative;overflow:hidden}
 footer.v2-dark canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 footer.v2-dark .wrap{position:relative;z-index:1}
@@ -488,11 +488,11 @@ footer.v2-dark .wrap .mono{color:#9CA3AF}
           <span class="t-lim" data-i18n="tier.free.lim">Up to 100 MB · 3 videos / day</span>
         </button>
         <button type="button" class="tier-pick" data-tier="booster" aria-pressed="false">
-          <span class="t-name"><span data-i18n="tier.booster">Booster</span> <span class="price">$4.99/mo</span></span>
+          <span class="t-name"><span data-i18n="tier.booster">Booster</span> <span class="price">$0</span></span>
           <span class="t-lim" data-i18n="tier.booster.lim">Up to 500 MB · 30 videos / day</span>
         </button>
         <button type="button" class="tier-pick pro" data-tier="premium" aria-pressed="false">
-          <span class="t-name"><span data-i18n="tier.premium">Premium</span> <span class="price">$9.99/mo</span></span>
+          <span class="t-name"><span data-i18n="tier.premium">Premium</span> <span class="price">$0</span></span>
           <span class="t-lim" data-i18n="tier.premium.lim">Up to 2 GB · Unlimited</span>
         </button>
       </div>
@@ -897,7 +897,7 @@ footer.v2-dark .wrap .mono{color:#9CA3AF}
   <section class="sec" id="pricing">
     <div class="sec-head">
       <span class="tag" data-i18n="nav.pricing">Pricing</span>
-      <h2 data-i18n="price.h2">Start free. Upgrade when you post daily.</h2>
+      <h2 data-i18n="price.h2">All plans free, forever.</h2>
       <p data-i18n="price.p">Pick a tier to apply its limits in the optimizer above — file-size and daily caps take effect instantly.</p>
     </div>
     <div class="prices">
@@ -916,7 +916,7 @@ footer.v2-dark .wrap .mono{color:#9CA3AF}
       </div>
       <div class="price-card hot">
         <div class="pname"><span data-i18n="tier.booster">Booster</span> <span class="badge" data-i18n="price.popular">Popular</span></div>
-        <div class="amount">$4.99<span data-i18n="price.month"> / month</span></div>
+        <div class="amount">$0<span data-i18n="price.forever"> / forever</span></div>
         <ul>
           <li data-i18n="pb.1">30 optimizations / day</li>
           <li data-i18n="pb.2">Files up to 500 MB</li>
@@ -929,7 +929,7 @@ footer.v2-dark .wrap .mono{color:#9CA3AF}
       </div>
       <div class="price-card">
         <div class="pname" data-i18n="tier.premium">Premium</div>
-        <div class="amount">$9.99<span data-i18n="price.month"> / month</span></div>
+        <div class="amount">$0<span data-i18n="price.forever"> / forever</span></div>
         <ul>
           <li data-i18n="pp.1">Unlimited optimizations</li>
           <li data-i18n="pp.2">Files up to 2 GB</li>
@@ -987,7 +987,7 @@ footer.v2-dark .wrap .mono{color:#9CA3AF}
     </details>
     <details>
       <summary><span data-i18n="faq.q7">Why are there daily limits on Free?</span> <span class="plus">+</span></summary>
-      <div class="ans" data-i18n-html="faq.a7">The Free tier covers casual posters — 3 videos a day up to 100 MB each. Booster and Premium raise the size and daily caps for creators who post constantly or work with long 4K captures.</div>
+      <div class="ans" data-i18n-html="faq.a7">The Free tier covers casual posters — 3 videos a day up to 100 MB each. Booster and Premium raise the size and daily caps for creators who post constantly or work with long 4K captures. All three plans are completely free — pick any of them, no payment, no account needed.</div>
     </details>
     <details>
       <summary><span data-i18n="faq.q8">Can you check my video's views or shadow-ban status from its link?</span> <span class="plus">+</span></summary>
@@ -1105,9 +1105,9 @@ var BN = {
 "how.1t":"এক্সপোর্টটা দিন","how.1p":"CapCut, Premiere বা আপনার ক্যাপচার সফটওয়্যার থেকে সর্বোচ্চ কোয়ালিটিতে এক্সপোর্ট করুন — রেকর্ড করে থাকলে 4K। MP4-টা এখানে ছাড়ুন।",
 "how.2t":"আমরা কন্টেইনার আবার সাজাই","how.2p":"ভিডিও আর অডিও স্ট্রিম বিট-বাই-বিট কপি হয়। বদলায় শুধু কন্টেইনার: ফাস্টস্টার্ট ক্রম, পরিষ্কার মেটাডেটা, মেরামত করা ইনডেক্স।",
 "how.3t":"অপ্টিমাইজড ফাইলটা পোস্ট করুন","how.3p":"ডাউনলোড করে সেই ফাইলটাই TikTok-এ আপলোড করুন। একই ক্লিপ — পরিষ্কার, হাই-বিটরেট সোর্স হিসেবে সাজানো, যাকে পাইপলাইন নরমভাবে সামলায়।",
-"price.h2":"ফ্রি শুরু করুন। প্রতিদিন পোস্ট করলে আপগ্রেড করুন।",
+"price.h2":"সব প্ল্যানই ফ্রি, চিরদিন।",
 "price.p":"একটি টিয়ার বাছুন — উপরের অপ্টিমাইজারে এর সীমা প্রয়োগ হবে; ফাইল-সাইজ আর দৈনিক সীমা সাথে সাথে কার্যকর হয়।",
-"price.forever":" / চিরদিন","price.month":" / মাস","price.popular":"জনপ্রিয়",
+"price.forever":" / চিরদিন","price.popular":"জনপ্রিয়",
 "pf.1":"দিনে ৩টি অপ্টিমাইজেশন","pf.2":"100 MB পর্যন্ত ফাইল","pf.3":"ফাস্টস্টার্ট + মেটাডেটা পরিষ্কার","pf.4":"1080p পর্যন্ত সোর্স","pf.5":"4K 120 FPS সোর্স","pf.6":"অগ্রাধিকার প্রসেসিং",
 "pb.1":"দিনে ৩০টি অপ্টিমাইজেশন","pb.2":"500 MB পর্যন্ত ফাইল","pb.4":"4K 60 FPS সোর্স","pb.5":"ক্লিপ অ্যানালাইজারসহ",
 "pp.1":"আনলিমিটেড অপ্টিমাইজেশন","pp.2":"2 GB পর্যন্ত ফাইল",
@@ -1126,7 +1126,7 @@ var BN = {
 "faq.q6":"কোন ফাইলগুলো সবচেয়ে ভালো কাজ করে?",
 "faq.a6":"H.264, HEVC (H.265) বা AV1 ভিডিওসহ MP4 বা MOV ফাইল। ভার্টিক্যাল 1080 × 1920 হলো TikTok-এর বেসলাইন; 2160 × 3840 (4K ভার্টিক্যাল) 60 বা 120 FPS-এ, 40 Mbps বা তার বেশি বিটরেটে পাইপলাইনকে সবচেয়ে বেশি কাজের উপকরণ দেয়। উপরের অ্যানালাইজার ঠিক এই বিষয়গুলোতেই আপনার ফাইলকে স্কোর দেয়।",
 "faq.q7":"ফ্রি-তে দৈনিক সীমা কেন?",
-"faq.a7":"ফ্রি টিয়ার মাঝে মাঝে পোস্ট করা ব্যবহারকারীদের জন্য — দিনে ৩টি ভিডিও, প্রতিটি 100 MB পর্যন্ত। বুস্টার আর প্রিমিয়াম যারা নিয়মিত পোস্ট করেন বা লম্বা 4K ক্যাপচার নিয়ে কাজ করেন, তাদের জন্য সাইজ আর দৈনিক সীমা বাড়িয়ে দেয়।",
+"faq.a7":"ফ্রি টিয়ার মাঝে মাঝে পোস্ট করা ব্যবহারকারীদের জন্য — দিনে ৩টি ভিডিও, প্রতিটি 100 MB পর্যন্ত। বুস্টার আর প্রিমিয়াম যারা নিয়মিত পোস্ট করেন বা লম্বা 4K ক্যাপচার নিয়ে কাজ করেন, তাদের জন্য সাইজ আর দৈনিক সীমা বাড়িয়ে দেয়। তিনটি প্ল্যানই সম্পূর্ণ ফ্রি — কোনো পেমেন্ট বা অ্যাকাউন্ট ছাড়াই যেকোনোটি বেছে নিতে পারবেন।",
 "faq.q8":"লিংক থেকে আমার ভিডিওর ভিউ বা শ্যাডো-ব্যান অবস্থা যাচাই করতে পারবেন?",
 "faq.a8":"না — আর কেউই পারে না। TikTok-এর পাবলিক লিংক ডেটা (আমাদের লিংক অ্যানালাইজার যে oEmbed সার্ভিস ব্যবহার করে) শুধু <b>টাইটেল, অথর আর থাম্বনেইল</b> ফেরত দেয়। ভিউ সংখ্যা, লাইক, FPS, কোডেক আর কোনো বিধিনিষেধের অবস্থা বাইরের টুলের কাছে উন্মুক্ত নয়, তাই যেসব টুল লিংক থেকে এগুলো যাচাইয়ের দাবি করে, তারা অনুমান করছে বা সংখ্যা বানাচ্ছে। ভিডিও সম্পর্কে আসল টেকনিক্যাল তথ্য চাইলে <b>ফাইলটি</b> অ্যানালাইজ করুন — সেই ডেটা সত্যিই সেখানে আছে।",
 "nav.hashtags":"হ্যাশট্যাগ",
@@ -2344,9 +2344,9 @@ function particleField(cv, count, colors, parallax){
     var n = window.innerWidth < 700 ? Math.round(count / 2) : count;
     dots = [];
     for(var i = 0; i < n; i++){
-      dots.push({x: Math.random() * w, y: Math.random() * h, r: Math.random() * 2 + 0.8,
-        c: colors[i % colors.length], vx: (Math.random() - 0.5) * 0.16, vy: (Math.random() - 0.5) * 0.16,
-        a: 0.35 + Math.random() * 0.5, tw: Math.random() * Math.PI * 2, d: Math.random() * 0.7 + 0.3});
+      dots.push({x: Math.random() * w, y: Math.random() * h, r: Math.random() * 5 + 2,
+        c: colors[i % colors.length], vx: (Math.random() - 0.5) * 0.45, vy: (Math.random() - 0.5) * 0.45,
+        a: 0.6 + Math.random() * 0.4, tw: Math.random() * Math.PI * 2, d: Math.random() * 0.7 + 0.3});
     }
     draw(0, 0);
   }
@@ -2365,8 +2365,8 @@ function particleField(cv, count, colors, parallax){
     var w = host.clientWidth, h = host.clientHeight;
     for(var i = 0; i < dots.length; i++){
       var d = dots[i];
-      d.x += d.vx; d.y += d.vy; d.tw += 0.02;
-      d.a = 0.35 + 0.35 * (0.5 + 0.5 * Math.sin(d.tw));
+      d.x += d.vx; d.y += d.vy; d.tw += 0.05;
+      d.a = 0.6 + 0.4 * (0.5 + 0.5 * Math.sin(d.tw));
       if(d.x < -5) d.x = w + 5; if(d.x > w + 5) d.x = -5;
       if(d.y < -5) d.y = h + 5; if(d.y > h + 5) d.y = -5;
     }
@@ -2392,23 +2392,44 @@ function particleField(cv, count, colors, parallax){
   size(); start();
 }
 var DOT_COLORS = ["#00C2CB","#00C2CB","#FE2C55","#FE2C55","#FFD166","#4EA8FF"];
-particleField(document.getElementById("v2-stars"), 130, DOT_COLORS, true);
-particleField(document.getElementById("v2-foot"), 40, DOT_COLORS, false);
+particleField(document.getElementById("v2-stars"), 200, DOT_COLORS, true);
+particleField(document.getElementById("v2-foot"), 80, DOT_COLORS, false);
 /* Typewriter reveal for the hero subtext (text unchanged; abort cleanly if i18n swaps it mid-type) */
 var sub = document.querySelector("header.hero .sub");
+var typeTimer = 0, typing = false, typeFull = "";
+function typeStop(restore){
+  if(typeTimer){ clearInterval(typeTimer); typeTimer = 0; }
+  typing = false;
+  if(sub){
+    sub.classList.remove("typing");
+    if(restore && typeFull && typeFull.indexOf(sub.textContent) === 0){ sub.textContent = typeFull; }
+  }
+}
 function typeSub(){
-  if(!sub || reduced) return;
-  var full = sub.textContent, i = 0;
-  sub.classList.add("typing");
-  sub.textContent = "";
-  var timer = setInterval(function(){
-    if(sub.textContent !== full.slice(0, i)){ clearInterval(timer); sub.classList.remove("typing"); return; }
+  if(!sub || reduced || typing) return;
+  typeFull = sub.textContent; var full = typeFull, i = 0;
+  typing = true; sub.classList.add("typing"); sub.textContent = "";
+  typeTimer = setInterval(function(){
+    if(sub.textContent !== full.slice(0, i)){ typeStop(false); return; }
     i++;
     sub.textContent = full.slice(0, i);
-    if(i >= full.length){ clearInterval(timer); sub.classList.remove("typing"); }
-  }, 14);
+    if(i >= full.length){ typeStop(false); }
+  }, 45);
 }
-if(document.readyState === "complete"){ typeSub(); }
+var heroEl = document.querySelector("header.hero");
+if(heroEl && "IntersectionObserver" in window){
+  var typePending = 0;
+  new IntersectionObserver(function(es){
+    es.forEach(function(en){
+      if(en.isIntersecting){
+        if(!typing && !typePending){ typePending = setTimeout(function(){ typePending = 0; typeSub(); }, 600); }
+      } else {
+        if(typePending){ clearTimeout(typePending); typePending = 0; }
+        typeStop(true);
+      }
+    });
+  }, {threshold: 0.2}).observe(heroEl);
+} else if(document.readyState === "complete"){ typeSub(); }
 else{ window.addEventListener("load", typeSub); }
 /* Section reveals: same one-shot, never-pre-hidden pattern as the original rv system, distinct class */
 if("IntersectionObserver" in window && !reduced){
